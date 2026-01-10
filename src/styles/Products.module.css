@@ -1,0 +1,858 @@
+.main {
+    padding-top: 80px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--primary-dark);
+    text-align: center;
+    padding: 6rem 2rem;
+}
+
+.heroContainer {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
+    background-color: rgba(197, 160, 89, 0.2);
+    color: var(--accent-gold);
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.heroTitle {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+.titleAccent {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--accent-gold);
+    margin-bottom: -0.5rem;
+}
+
+.titleMain {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    color: var(--white);
+    letter-spacing: -2px;
+}
+
+.heroSubtitle {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Benefits Bar */
+.benefitsBar {
+    background-color: var(--off-white);
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.benefitsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.benefitItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.benefitIcon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.benefitText {
+    display: flex;
+    flex-direction: column;
+}
+
+.benefitText strong {
+    color: var(--primary-dark);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.benefitText span {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* Products Section */
+.productsSection {
+    background-color: var(--white);
+    padding: 5rem 0;
+}
+
+.productsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.productCard {
+    background-color: var(--off-white);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.productCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(10, 61, 46, 0.15);
+    border-color: var(--accent-gold);
+}
+
+.productBadge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, var(--accent-gold), #d4af61);
+    color: var(--primary-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);
+}
+
+.productImageWrapper {
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(135deg, var(--white), var(--off-white));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px 24px 0 0;
+}
+
+.productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.productCard:hover .productImage {
+    transform: scale(1.08);
+}
+
+.productContent {
+    padding: 2rem;
+}
+
+.productTagline {
+    display: inline-block;
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+}
+
+.productName {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.ratingWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.starFilled {
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+}
+
+.starEmpty {
+    color: #ddd;
+    font-size: 0.9rem;
+}
+
+.ratingText {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.productDescription {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.featuresList {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.featuresList li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+}
+
+.checkIcon {
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.priceWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.currentPrice {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.originalPrice {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    text-decoration: line-through;
+}
+
+.discount {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+    padding: 0.3rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.addToCartBtn {
+    width: 100%;
+    background-color: var(--primary-dark);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-dark);
+    cursor: pointer;
+}
+
+.addToCartBtn:hover {
+    background-color: transparent;
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Surfaces Section */
+.surfacesSection {
+    background-color: var(--primary-dark);
+    padding: 5rem 0;
+}
+
+.surfacesContent {
+    text-align: center;
+}
+
+.surfacesTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.surfacesSubtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.surfacesGrid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.surfaceItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 150px;
+    transition: all 0.3s ease;
+}
+
+.surfaceItem:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+}
+
+.surfaceItem svg {
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+}
+
+.surfaceItem span {
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* CTA Section */
+.ctaSection {
+    background-color: var(--off-white);
+    padding: 5rem 0;
+}
+
+.ctaBox {
+    background-color: var(--white);
+    padding: 4rem;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(10, 61, 46, 0.08);
+    border: 1px solid rgba(10, 61, 46, 0.05);
+}
+
+.ctaBox h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+}
+
+.ctaBox p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ctaBtn {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-dark);
+    cursor: pointer;
+}
+
+.ctaBtn:hover {
+    background-color: transparent;
+    color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(10, 61, 46, 0.2);
+}
+
+/* Section Headers */
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.sectionTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+}
+
+.sectionSubtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+/* Bundle Grid */
+.bundleGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.bundleCard {
+    border: 2px solid rgba(197, 160, 89, 0.2);
+}
+
+.bundleCard:hover {
+    border-color: var(--accent-gold);
+}
+
+/* Refills Section */
+.refillsSection {
+    background-color: var(--off-white);
+    padding: 5rem 0;
+}
+
+.refillsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.refillCard {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Scent Color Indicators */
+.scentIndicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    border-radius: 0;
+    z-index: 10;
+}
+
+.lavender {
+    background: linear-gradient(90deg, #9b7bb8, #c4a7d7);
+}
+
+.citrus {
+    background: linear-gradient(90deg, #f5a623, #ffd93d);
+}
+
+.ocean {
+    background: linear-gradient(90deg, #4a90d9, #7ec8e3);
+}
+
+.refillCard .productImageWrapper {
+    height: 320px;
+    border-radius: 0;
+}
+
+.refillCard .productContent {
+    padding: 1.5rem;
+}
+
+.refillCard .productName {
+    font-size: 1.4rem;
+}
+
+.refillCard .productDescription {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.refillCard .currentPrice {
+    font-size: 1.5rem;
+}
+
+/* B2B Section */
+.b2bSection {
+    background: var(--primary-dark);
+    padding: 6rem 0;
+}
+
+/* B2B Header */
+.b2bHeader {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.b2bIconLarge {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent-gold), #d4af61);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 15px 40px rgba(197, 160, 89, 0.3);
+}
+
+.b2bIconLarge svg {
+    font-size: 2rem;
+    color: var(--primary-dark);
+}
+
+.b2bBadge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(197, 160, 89, 0.15);
+    color: var(--accent-gold);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.b2bTitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.b2bSubtitle {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* B2B Cards Grid */
+.b2bGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+}
+
+.b2bCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.b2bCard:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-8px);
+    border-color: rgba(197, 160, 89, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.b2bCardIcon {
+    font-size: 3rem;
+    margin-bottom: 1.25rem;
+}
+
+.b2bCard h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.b2bCard p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+/* B2B CTA */
+.b2bCta {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.b2bCtaContent h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+}
+
+.b2bCtaContent p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.b2bCtaActions {
+    display: flex;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.b2bPhoneBtn,
+.b2bWhatsappBtn,
+.b2bEmailBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.b2bPhoneBtn {
+    background: linear-gradient(135deg, var(--accent-gold), #d4af61);
+    color: var(--primary-dark);
+}
+
+.b2bPhoneBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4);
+}
+
+.b2bWhatsappBtn {
+    background: #25D366;
+    color: white;
+}
+
+.b2bWhatsappBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+}
+
+.b2bEmailBtn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+}
+
+.b2bEmailBtn:hover {
+    border-color: var(--accent-gold);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .productsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .refillsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .benefitsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bundleGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .refillsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .b2bGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .b2bCta {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .b2bCtaActions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .surfacesGrid {
+        gap: 1.5rem;
+    }
+
+    .surfaceItem {
+        padding: 1.5rem;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 5rem 1.5rem;
+        min-height: 40vh;
+    }
+
+    .benefitsGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .benefitItem {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .benefitText {
+        align-items: center;
+    }
+
+    .productsGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .refillsGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .productImageWrapper {
+        height: 250px;
+    }
+
+    .surfacesGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .surfaceItem {
+        min-width: auto;
+    }
+
+    .b2bGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .b2bCta {
+        padding: 2rem;
+    }
+
+    .b2bCtaActions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .b2bPhoneBtn,
+    .b2bWhatsappBtn,
+    .b2bEmailBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .ctaBox {
+        padding: 3rem 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .benefitsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .benefitItem {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .benefitText {
+        align-items: flex-start;
+    }
+
+    .productContent {
+        padding: 1.5rem;
+    }
+
+    .productName {
+        font-size: 1.5rem;
+    }
+
+    .currentPrice {
+        font-size: 1.75rem;
+    }
+
+    .b2bCard {
+        padding: 1.5rem;
+    }
+
+    .b2bCardIcon {
+        font-size: 2.5rem;
+    }
+
+    .b2bCta {
+        padding: 1.5rem;
+    }
+
+    .b2bCtaContent h3 {
+        font-size: 1.3rem;
+    }
+}

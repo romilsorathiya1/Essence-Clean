@@ -1,0 +1,96 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(10, 61, 46, 0.1);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo a {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.logoText {
+    font-family: var(--font-playfair);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: 2px;
+}
+
+.logoSubtext {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 4px;
+    margin-left: 3px;
+}
+
+.nav {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.navLink {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    transition: var(--transition);
+    position: relative;
+}
+
+.navLink::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-dark);
+    transition: var(--transition);
+}
+
+.navLink:hover {
+    color: var(--primary-dark);
+}
+
+.navLink:hover::after {
+    width: 100%;
+}
+
+.buyButton {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: 1px solid var(--primary-dark);
+}
+
+.buyButton:hover {
+    background-color: transparent;
+    color: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+    }
+}
