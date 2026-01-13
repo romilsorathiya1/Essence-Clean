@@ -42,8 +42,8 @@ export default function Contact() {
                         <span className={styles.titleMain}>Hear From You</span>
                     </h1>
                     <p className={styles.heroSubtitle}>
-                        Have questions about our products? We'd love to hear from you.
-                        Our team is here to help.
+                        Have questions about our products or bulk orders? Whether you're a hotel, cafe, office, or home,
+                        our team is here to help.
                     </p>
                 </div>
             </section>
@@ -216,22 +216,22 @@ export default function Contact() {
             </section>
 
             {/* FAQ Teaser */}
-            <section className={styles.faqTeaser}>
+            <section className={styles.faqTeaser} id='faq'>
                 <div className="container">
                     <div className={styles.faqContent}>
                         <h2>Frequently Asked Questions</h2>
                         <div className={styles.faqGrid}>
                             <div className={styles.faqItem}>
                                 <h3>What surfaces can I use Essence Clean on?</h3>
-                                <p>Our formula is safe for all surfaces including glass, countertops, appliances, bathrooms, and kitchen surfaces.</p>
+                                <p>Our formula is safe for all commercial and residential surfaces including glass, countertops, appliances, bathrooms, and kitchen surfaces.</p>
                             </div>
                             <div className={styles.faqItem}>
-                                <h3>Is Essence Clean safe for children and pets?</h3>
-                                <p>Yes! Our 100% plant-based formula contains no harsh chemicals and is completely safe for families and pets.</p>
+                                <h3>Is Essence Clean safe for staff and customers?</h3>
+                                <p>Yes! Our 100% plant-based formula contains no harsh chemicals and is completely safe for use in hotels, restaurants, offices, and homes.</p>
                             </div>
                             <div className={styles.faqItem}>
-                                <h3>How long does one bottle last?</h3>
-                                <p>A 500ml spray bottle typically lasts 4-6 weeks with regular household use.</p>
+                                <h3>How long does one bottle last for commercial use?</h3>
+                                <p>Usage varies by business size. Contact us for custom volume recommendations for your hotel, cafe, or office.</p>
                             </div>
                             <div className={styles.faqItem}>
                                 <h3>Do you offer bulk discounts?</h3>

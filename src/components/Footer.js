@@ -12,7 +12,7 @@ const Footer = () => {
                             <span className={styles.logoSubtext}>CLEAN</span>
                         </div>
                         <p className={styles.description}>
-                            Elevating the art of cleanliness with premium, sustainable solutions for your home.
+                            Elevating the art of cleanliness with premium, sustainable solutions for hotels, cafes, offices, and homes.
                         </p>
                     </div>
 
@@ -20,8 +20,8 @@ const Footer = () => {
                         <div className={styles.linkGroup}>
                             <h3>Product</h3>
                             <Link href="/products">All-in-One Spray</Link>
-                            <Link href="/refills">Refill Packs</Link>
-                            <Link href="/accessories">Accessories</Link>
+                            <Link href="/products#refills">Refill Packs</Link>
+                            <Link href="/products#accessories">Accessories</Link>
                         </div>
                         <div className={styles.linkGroup}>
                             <h3>Company</h3>
@@ -31,7 +31,7 @@ const Footer = () => {
                         </div>
                         <div className={styles.linkGroup}>
                             <h3>Support</h3>
-                            <Link href="/faq">FAQ</Link>
+                            <Link href="/contact#faq">FAQ</Link>
                             <Link href="/shipping">Shipping</Link>
                             <Link href="/contact">Contact Us</Link>
                         </div>

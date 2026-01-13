@@ -33,7 +33,7 @@ export default function Home() {
 
                             <p className={styles.subtitle}>
                                 Experience deep cleaning power without the harsh chemicals.
-                                Carefully crafted for the modern, conscious home.
+                                Trusted by hotels, cafes, offices, and conscious homes nationwide.
                             </p>
 
                             <div className={styles.cta}>
@@ -49,7 +49,7 @@ export default function Home() {
                 <div className="container">
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>Our Products</h2>
-                        <p className={styles.sectionSubtitle}>Choose the perfect solution for your cleaning needs</p>
+                        <p className={styles.sectionSubtitle}>Professional-grade solutions for businesses and homes alike</p>
                     </div>
 
                     <div className={styles.productGrid}>
@@ -64,7 +64,7 @@ export default function Home() {
                             </div>
                             <div className={styles.productInfo}>
                                 <h3>Complete Cleaning Kit</h3>
-                                <p className={styles.productDescription}>Everything you need for a premium cleaning experience. Includes spray bottle, refill pack, and microfiber cloth.</p>
+                                <p className={styles.productDescription}>Everything you need for a premium cleaning experience. Perfect for offices, hotels, restaurants, and homes.</p>
                                 <ul className={styles.productFeatures}>
                                     <li>500ml Spray Bottle</li>
                                     <li>2L Refill Pack</li>
@@ -85,7 +85,7 @@ export default function Home() {
                             </div>
                             <div className={styles.productInfo}>
                                 <h3>Refill Pack</h3>
-                                <p className={styles.productDescription}>Keep your bottle full and your home clean. Eco-friendly refill solution for sustainable cleaning.</p>
+                                <p className={styles.productDescription}>Keep your spaces spotless with our eco-friendly refill solution. Ideal for high-volume commercial use.</p>
                                 <ul className={styles.productFeatures}>
                                     <li>2L Concentrated Formula</li>
                                     <li>Eco-Friendly Packaging</li>
@@ -143,7 +143,7 @@ export default function Home() {
                 <div className="container">
                     <div className={styles.versatilityBadge}>VERSATILITY</div>
                     <h2 className={styles.versatilityTitle}>One Cleaner, Endless Possibilities</h2>
-                    <p className={styles.versatilitySubtitle}>Our all-in-one formula works beautifully on all these surfaces</p>
+                    <p className={styles.versatilitySubtitle}>Perfect for hotels, offices, cafes, restaurants, and homes</p>
 
                     <div className={styles.surfaceGrid}>
                         <div className={styles.surfaceCard}>
@@ -227,8 +227,8 @@ export default function Home() {
             <section className={styles.finalCta}>
                 <div className="container">
                     <div className={styles.ctaBox}>
-                        <h2>Ready to transform your home?</h2>
-                        <p>Join the movement towards conscious, premium cleaning.</p>
+                        <h2>Ready to elevate your space?</h2>
+                        <p>Join leading hotels, cafes, and businesses choosing conscious, premium cleaning.</p>
                         <button className={styles.whiteBtn}>Get Started Today</button>
                     </div>
                 </div>

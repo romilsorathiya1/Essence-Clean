@@ -3,7 +3,7 @@ import { FaLeaf, FaRecycle, FaShieldHeart, FaStar, FaCheck, FaTruck, FaArrowRigh
 
 export const metadata = {
     title: 'Shop | Essence Clean',
-    description: 'Shop our premium eco-friendly cleaning products. All-natural formulas for a spotless, sustainable home.',
+    description: 'Shop our premium eco-friendly cleaning products. All-natural formulas trusted by hotels, cafes, offices, and homes.',
 };
 
 const products = [
@@ -11,7 +11,7 @@ const products = [
         id: 1,
         name: 'Complete Full Pack',
         tagline: 'Best Value Bundle',
-        description: 'The ultimate cleaning bundle with all 3 scent variants. Includes spray bottles, refill packs for each scent, and premium microfiber cloths.',
+        description: 'The ultimate cleaning bundle for businesses and homes. Perfect for hotels, restaurants, and offices. Includes spray bottles, refill packs, and microfiber cloths.',
         price: '₹2,499',
         originalPrice: '₹3,299',
         discount: '24% OFF',
@@ -31,7 +31,7 @@ const products = [
         id: 2,
         name: 'Refill Pack Bundle',
         tagline: 'All 3 Scents',
-        description: 'Complete refill set with all three refreshing scents. Keep your home smelling fresh with variety.',
+        description: 'Complete refill set with all three refreshing scents. Ideal for commercial spaces and bulk usage.',
         price: '₹1,199',
         originalPrice: '₹1,499',
         discount: '20% OFF',
@@ -51,7 +51,7 @@ const products = [
         id: 3,
         name: 'Lavender Bliss Refill',
         tagline: 'Calming Scent',
-        description: 'Soothing lavender fragrance for a relaxing clean. Perfect for bedrooms and living spaces.',
+        description: 'Soothing lavender fragrance for a premium ambiance. Perfect for hotel rooms, spas, and reception areas.',
         price: '₹449',
         originalPrice: '₹549',
         discount: '18% OFF',
@@ -72,7 +72,7 @@ const products = [
         id: 4,
         name: 'Fresh Citrus Refill',
         tagline: 'Energizing Scent',
-        description: 'Zesty citrus blend for an energizing clean. Ideal for kitchens and high-traffic areas.',
+        description: 'Zesty citrus blend for an energizing clean. Ideal for restaurant kitchens, cafes, and food service areas.',
         price: '₹449',
         originalPrice: '₹549',
         discount: '18% OFF',
@@ -93,7 +93,7 @@ const products = [
         id: 5,
         name: 'Ocean Breeze Refill',
         tagline: 'Fresh Scent',
-        description: 'Crisp ocean-inspired freshness for a clean atmosphere. Great for bathrooms and entryways.',
+        description: 'Crisp ocean-inspired freshness for a clean atmosphere. Great for office restrooms, lobbies, and commercial spaces.',
         price: '₹449',
         originalPrice: '₹549',
         discount: '18% OFF',
@@ -125,8 +125,8 @@ const benefits = [
     },
     {
         icon: <FaShieldHeart />,
-        title: 'Family Safe',
-        description: 'No harsh chemicals'
+        title: 'Safe for All',
+        description: 'Staff & customer safe'
     },
     {
         icon: <FaTruck />,
@@ -174,7 +174,7 @@ export default function Products() {
             </section>
 
             {/* Bundle Products */}
-            <section className={styles.productsSection}>
+            <section className={styles.productsSection} id='accessories'>
                 <div className="container">
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>Value Bundles</h2>
@@ -239,7 +239,7 @@ export default function Products() {
             </section>
 
             {/* Individual Scent Refills */}
-            <section className={styles.refillsSection}>
+            <section className={styles.refillsSection} id='refills'>
                 <div className="container">
                     <div className={styles.sectionHeader}>
                         <h2 className={styles.sectionTitle}>Individual Scent Refills</h2>
