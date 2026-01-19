@@ -1,0 +1,844 @@
+/* Admin Panel Styles */
+
+/* ========================================
+   CSS Variables
+======================================== */
+:root {
+    --admin-primary: #1a472a;
+    --admin-primary-light: #2d5a3d;
+    --admin-primary-dark: #0f2d1a;
+    --admin-accent: #c4a35a;
+    --admin-bg: #f5f7fa;
+    --admin-sidebar-bg: #1a472a;
+    --admin-card-bg: #ffffff;
+    --admin-text: #1a1a1a;
+    --admin-text-light: #6b7280;
+    --admin-border: #e5e7eb;
+    --admin-success: #22c55e;
+    --admin-warning: #f59e0b;
+    --admin-danger: #ef4444;
+    --admin-info: #3b82f6;
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ========================================
+   Login Page
+======================================== */
+.loginPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-dark) 100%);
+    padding: 2rem;
+    font-family: var(--font-body);
+}
+
+.loginCard {
+    background: var(--admin-card-bg);
+    border-radius: 16px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.loginLogo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.loginLogo h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.loginLogo p {
+    color: var(--admin-text-light);
+    margin-top: 0.5rem;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-weight: 500;
+    color: var(--admin-text);
+    font-size: 0.875rem;
+}
+
+.formGroup input {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.formGroup input:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+}
+
+.loginBtn {
+    padding: 1rem;
+    background: var(--admin-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.loginBtn:hover {
+    background: var(--admin-primary-light);
+    transform: translateY(-1px);
+}
+
+.loginBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.errorMessage {
+    background: #fef2f2;
+    color: var(--admin-danger);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    border: 1px solid #fecaca;
+}
+
+/* ========================================
+   Admin Layout
+======================================== */
+.adminLayout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--admin-bg);
+    font-family: var(--font-body);
+}
+
+.sidebar {
+    width: 260px;
+    background: var(--admin-sidebar-bg);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebarLogo {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarLogo h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.sidebarLogo span {
+    font-size: 0.75rem;
+    color: var(--admin-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebarNav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.9375rem;
+}
+
+.navItem:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.navItem.active {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-left: 3px solid var(--admin-accent);
+}
+
+.navItem svg {
+    font-size: 1.125rem;
+}
+
+.sidebarFooter {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.logoutBtn:hover {
+    background: rgba(239, 68, 68, 0.3);
+    color: white;
+}
+
+.mainContent {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+}
+
+.pageHeader {
+    margin-bottom: 2rem;
+}
+
+.pageHeader h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--admin-text);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.pageHeader p {
+    color: var(--admin-text-light);
+    margin-top: 0.5rem;
+}
+
+/* ========================================
+   Dashboard
+======================================== */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.statCard {
+    background: var(--admin-card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.statIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.statIcon.products {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--admin-info);
+}
+
+.statIcon.orders {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--admin-success);
+}
+
+.statIcon.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--admin-warning);
+}
+
+.statIcon.messages {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+}
+
+.statIcon.revenue {
+    background: rgba(196, 163, 90, 0.1);
+    color: var(--admin-accent);
+}
+
+.statInfo h3 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--admin-text-light);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statInfo p {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--admin-text);
+    margin: 0.25rem 0 0;
+}
+
+/* ========================================
+   Tables
+======================================== */
+.tableCard {
+    background: var(--admin-card-bg);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tableHeader {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tableHeader h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: var(--admin-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.addBtn:hover {
+    background: var(--admin-primary-light);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.table th {
+    background: #f9fafb;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--admin-text-light);
+}
+
+.table td {
+    font-size: 0.875rem;
+    color: var(--admin-text);
+}
+
+.table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.productImage {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f3f4f6;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge.active,
+.badge.delivered,
+.badge.paid {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--admin-success);
+}
+
+.badge.inactive,
+.badge.cancelled {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+}
+
+.badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--admin-warning);
+}
+
+.badge.processing,
+.badge.confirmed {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--admin-info);
+}
+
+.badge.shipped {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.badge.unread {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--admin-danger);
+}
+
+.badge.read {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--admin-text-light);
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actionBtn {
+    padding: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--admin-text-light);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionBtn:hover {
+    background: #f3f4f6;
+    color: var(--admin-text);
+}
+
+.actionBtn.edit:hover {
+    border-color: var(--admin-info);
+    color: var(--admin-info);
+}
+
+.actionBtn.delete:hover {
+    border-color: var(--admin-danger);
+    color: var(--admin-danger);
+}
+
+.actionBtn.view:hover {
+    border-color: var(--admin-primary);
+    color: var(--admin-primary);
+}
+
+/* ========================================
+   Modal
+======================================== */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+}
+
+.modal {
+    background: var(--admin-card-bg);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modalHeader {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--admin-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modalHeader h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--admin-text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.closeBtn:hover {
+    color: var(--admin-text);
+}
+
+.modalBody {
+    padding: 1.5rem;
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.modalForm input,
+.modalForm textarea,
+.modalForm select {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+}
+
+.modalForm input:focus,
+.modalForm textarea:focus,
+.modalForm select:focus {
+    outline: none;
+    border-color: var(--admin-primary);
+    box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+}
+
+.modalForm textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.modalFooter {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--admin-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.cancelBtn {
+    padding: 0.75rem 1.25rem;
+    background: transparent;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--admin-text);
+    transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+    background: #f3f4f6;
+}
+
+.saveBtn {
+    padding: 0.75rem 1.25rem;
+    background: var(--admin-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saveBtn:hover {
+    background: var(--admin-primary-light);
+}
+
+/* ========================================
+   Empty State
+======================================== */
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.emptyState svg {
+    font-size: 3rem;
+    color: var(--admin-text-light);
+    margin-bottom: 1rem;
+}
+
+.emptyState h3 {
+    font-size: 1.125rem;
+    color: var(--admin-text);
+    margin: 0 0 0.5rem;
+}
+
+.emptyState p {
+    color: var(--admin-text-light);
+    margin: 0;
+}
+
+/* ========================================
+   Loading
+======================================== */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: var(--admin-text-light);
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--admin-border);
+    border-top-color: var(--admin-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   Order Details
+======================================== */
+.orderDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.orderSection {
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.orderSection h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.orderSection p {
+    margin: 0.25rem 0;
+    font-size: 0.9375rem;
+    color: var(--admin-text-light);
+}
+
+.orderItems {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.orderItems li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--admin-border);
+}
+
+.orderItems li:last-child {
+    border-bottom: none;
+}
+
+.statusSelect {
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* ========================================
+   Message Card
+======================================== */
+.messageCard {
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.messageCard.unread {
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 3px solid var(--admin-danger);
+}
+
+.messageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.messageHeader h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--admin-text);
+    margin: 0;
+}
+
+.messageHeader span {
+    font-size: 0.75rem;
+    color: var(--admin-text-light);
+}
+
+.messageMeta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--admin-text-light);
+}
+
+.messageBody {
+    font-size: 0.9375rem;
+    color: var(--admin-text);
+    line-height: 1.6;
+}
+
+/* ========================================
+   Responsive
+======================================== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 80px;
+    }
+
+    .sidebarLogo h2,
+    .sidebarLogo span,
+    .navItem span,
+    .logoutBtn span {
+        display: none;
+    }
+
+    .navItem {
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .navItem.active {
+        border-left: none;
+        border-bottom: 3px solid var(--admin-accent);
+    }
+
+    .logoutBtn {
+        justify-content: center;
+    }
+
+    .mainContent {
+        margin-left: 80px;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .statsGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .mainContent {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .loginCard {
+        padding: 2rem;
+    }
+}

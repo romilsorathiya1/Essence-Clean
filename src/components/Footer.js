@@ -31,6 +31,7 @@ const Footer = () => {
                         </div>
                         <div className={styles.linkGroup}>
                             <h3>Support</h3>
+                            <Link href="/track-order">Track Order</Link>
                             <Link href="/contact#faq">FAQ</Link>
                             <Link href="/shipping">Shipping</Link>
                             <Link href="/contact">Contact Us</Link>

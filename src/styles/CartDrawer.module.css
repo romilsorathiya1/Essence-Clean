@@ -1,0 +1,325 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1100;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background: var(--white);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(10, 61, 46, 0.1);
+    background: var(--primary-dark);
+    color: var(--white);
+}
+
+.header h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-playfair);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.closeBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Empty Cart */
+.emptyCart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    color: rgba(10, 61, 46, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.emptyCart h3 {
+    font-family: var(--font-playfair);
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.emptyCart p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.shopBtn {
+    display: inline-block;
+    background: var(--primary-dark);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.shopBtn:hover {
+    background: var(--primary-darker);
+    transform: translateY(-2px);
+}
+
+/* Cart Items */
+.items {
+    flex: 1;
+    padding: 1rem;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(10, 61, 46, 0.02);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(10, 61, 46, 0.08);
+}
+
+.itemImage {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid rgba(10, 61, 46, 0.1);
+}
+
+.itemImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+}
+
+.itemDetails h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.itemPrice {
+    font-size: 0.85rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.quantityControls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qtyBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--white);
+    border: 1px solid rgba(10, 61, 46, 0.2);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.qtyBtn:hover {
+    background: var(--primary-dark);
+    color: var(--white);
+    border-color: var(--primary-dark);
+}
+
+.quantity {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.itemActions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.itemTotal {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.removeBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.removeBtn:hover {
+    background: #dc3545;
+    color: var(--white);
+}
+
+/* Footer */
+.footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(10, 61, 46, 0.1);
+    background: rgba(10, 61, 46, 0.02);
+}
+
+.subtotal {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.shippingNote {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 1.25rem;
+}
+
+.checkoutBtn {
+    display: block;
+    width: 100%;
+    background: var(--primary-dark);
+    color: var(--white);
+    padding: 1rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    transition: var(--transition);
+    margin-bottom: 0.75rem;
+}
+
+.checkoutBtn:hover {
+    background: #073d2e;
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(10, 61, 46, 0.3);
+}
+
+.continueBtn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--primary-dark);
+    padding: 0.75rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid var(--primary-dark);
+    transition: var(--transition);
+}
+
+.continueBtn:hover {
+    background: rgba(10, 61, 46, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .drawer {
+        max-width: 100%;
+    }
+
+    .item {
+        grid-template-columns: 70px 1fr;
+        gap: 0.75rem;
+    }
+
+    .itemActions {
+        grid-column: span 2;
+        flex-direction: row;
+        margin-top: 0.5rem;
+    }
+}

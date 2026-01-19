@@ -1,7 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import styles from '../styles/Header.module.css';
+import { useCart } from '@/context/CartContext';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const Header = () => {
+    const { cartCount, openCart } = useCart();
+
     return (
         <header className={styles.header}>
             <div className={`${styles.container} container`}>
@@ -21,7 +27,13 @@ const Header = () => {
                 </nav>
 
                 <div className={styles.actions}>
-                    <button className={styles.buyButton}>Buy Now</button>
+                    <button onClick={openCart} className={styles.cartButton}>
+                        <FaShoppingCart />
+                        {cartCount > 0 && (
+                            <span className={styles.cartCount}>{cartCount}</span>
+                        )}
+                    </button>
+                    <Link href="/products" className={styles.buyButton}>Shop Now</Link>
                 </div>
             </div>
         </header>
@@ -29,3 +41,4 @@ const Header = () => {
 };
 
 export default Header;
+

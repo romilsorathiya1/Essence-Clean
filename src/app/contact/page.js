@@ -21,14 +21,33 @@ export default function Contact() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate form submission
-        setIsSubmitted(true);
-        setTimeout(() => {
-            setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-            setIsSubmitted(false);
-        }, 3000);
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setIsSubmitted(true);
+                setTimeout(() => {
+                    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+                    setIsSubmitted(false);
+                }, 3000);
+            } else {
+                alert(data.error || 'Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Failed to send message. Please try again.');
+        }
     };
 
     return (

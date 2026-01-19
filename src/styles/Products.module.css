@@ -113,6 +113,82 @@
     font-size: 0.85rem;
 }
 
+/* Track Order Banner */
+.trackOrderBanner {
+    background: linear-gradient(135deg, var(--primary-dark), #073d2e);
+    padding: 1.5rem 0;
+}
+
+.trackOrderContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.trackOrderIcon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    font-size: 1.3rem;
+}
+
+.trackOrderText {
+    text-align: left;
+}
+
+.trackOrderText h3 {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+}
+
+.trackOrderText p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.trackOrderBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    background: linear-gradient(135deg, var(--accent-gold), #d4af61);
+    color: var(--primary-dark);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.trackOrderBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
+}
+
+@media (max-width: 768px) {
+    .trackOrderContent {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .trackOrderText {
+        text-align: center;
+    }
+
+    .trackOrderIcon {
+        display: none;
+    }
+}
+
 /* Products Section */
 .productsSection {
     background-color: var(--white);
@@ -308,6 +384,19 @@
     background-color: transparent;
     color: var(--primary-dark);
     transform: translateY(-2px);
+}
+
+.addToCartBtn.added {
+    background-color: #16a34a;
+    border-color: #16a34a;
+    color: var(--white);
+}
+
+.addToCartBtn.added:hover {
+    background-color: #15803d;
+    border-color: #15803d;
+    color: var(--white);
+    transform: none;
 }
 
 /* Surfaces Section */

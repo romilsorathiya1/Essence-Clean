@@ -1,7 +1,10 @@
+'use client';
+
 import styles from '../styles/Home.module.css';
 import { FaLeaf, FaHeart } from 'react-icons/fa6';
 import { MdWindow, MdDoorSliding, MdCountertops, MdBathroom, MdKitchen, MdChair, MdDirectionsCar } from 'react-icons/md';
 import { BsGrid3X3Gap } from 'react-icons/bs';
+import Link from 'next/link';
 
 export default function Home() {
     return (
@@ -37,7 +40,7 @@ export default function Home() {
                             </p>
 
                             <div className={styles.cta}>
-                                <button className={styles.primaryBtn}>Shop the Collection</button>
+                                <Link href="/products" className={styles.primaryBtn}>Shop the Collection</Link>
                             </div>
                         </div>
                     </div>
@@ -70,7 +73,7 @@ export default function Home() {
                                     <li>2L Refill Pack</li>
                                     <li>Premium Microfiber Cloth</li>
                                 </ul>
-                                <button className={styles.productBtn}>Shop Full Kit</button>
+                                <Link href="/products" className={styles.productBtn}>Shop Full Kit</Link>
                             </div>
                         </div>
 
@@ -91,7 +94,7 @@ export default function Home() {
                                     <li>Eco-Friendly Packaging</li>
                                     <li>Long-Lasting Value</li>
                                 </ul>
-                                <button className={styles.productBtn}>Shop Refill Pack</button>
+                                <Link href="/products" className={styles.productBtn}>Shop Refill Pack</Link>
                             </div>
                         </div>
                     </div>
@@ -218,7 +221,7 @@ export default function Home() {
                             <li>Spray directly onto the surface from 6 inches away</li>
                             <li>Wipe clean with a microfiber cloth or paper towel</li>
                         </ul>
-                        <button className={styles.primaryBtn}>Shop Now</button>
+                        <Link href="/products" className={styles.primaryBtn}>Shop Now</Link>
                     </div>
                 </div>
             </section>
@@ -229,7 +232,7 @@ export default function Home() {
                     <div className={styles.ctaBox}>
                         <h2>Ready to elevate your space?</h2>
                         <p>Join leading hotels, cafes, and businesses choosing conscious, premium cleaning.</p>
-                        <button className={styles.whiteBtn}>Get Started Today</button>
+                        <Link href="/products" className={styles.whiteBtn}>Get Started Today</Link>
                     </div>
                 </div>
             </section>

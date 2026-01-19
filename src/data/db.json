@@ -1,0 +1,197 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Complete Full Pack",
+      "tagline": "Best Value Bundle",
+      "description": "The ultimate cleaning bundle for businesses and homes. Perfect for hotels, restaurants, and offices. Includes spray bottles, refill packs, and microfiber cloths.",
+      "price": 2499,
+      "originalPrice": 3299,
+      "discount": "24% OFF",
+      "image": "/assets/fullPack.png",
+      "features": [
+        "3x 500ml Spray Bottles (All Scents)",
+        "3x 1L Refill Packs (All Scents)",
+        "3x Premium Microfiber Cloths",
+        "Elegant Gift Box Packaging"
+      ],
+      "badge": "Best Seller",
+      "rating": 4.9,
+      "reviews": 456,
+      "category": "bundle",
+      "stock": 100,
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "scent": "",
+      "updatedAt": "2026-01-18T12:30:56.086Z"
+    },
+    {
+      "id": 2,
+      "name": "Refill Pack Bundle",
+      "tagline": "All 3 Scents",
+      "description": "Complete refill set with all three refreshing scents. Ideal for commercial spaces and bulk usage.",
+      "price": 1199,
+      "originalPrice": 1499,
+      "discount": "20% OFF",
+      "image": "/assets/refillPack.png",
+      "features": [
+        "1L Lavender Bliss Refill",
+        "1L Fresh Citrus Refill",
+        "1L Ocean Breeze Refill",
+        "Eco-Friendly Packaging"
+      ],
+      "badge": "Popular",
+      "rating": 4.8,
+      "reviews": 289,
+      "category": "bundle",
+      "stock": 150,
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Lavender Bliss Refill",
+      "tagline": "Calming Scent",
+      "description": "Soothing lavender fragrance for a premium ambiance. Perfect for hotel rooms, spas, and reception areas.",
+      "price": 449,
+      "originalPrice": 549,
+      "discount": "18% OFF",
+      "image": "/assets/1refill.png",
+      "features": [
+        "1L Concentrated Formula",
+        "Calming Lavender Aroma",
+        "4x Spray Bottle Refills",
+        "100% Natural Ingredients"
+      ],
+      "badge": null,
+      "rating": 4.7,
+      "reviews": 167,
+      "category": "single",
+      "scent": "lavender",
+      "stock": 200,
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Fresh Citrus Refill",
+      "tagline": "Energizing Scent",
+      "description": "Zesty citrus blend for an energizing clean. Ideal for restaurant kitchens, cafes, and food service areas.",
+      "price": 449,
+      "originalPrice": 549,
+      "discount": "18% OFF",
+      "image": "/assets/2refill.png",
+      "features": [
+        "1L Concentrated Formula",
+        "Refreshing Citrus Aroma",
+        "4x Spray Bottle Refills",
+        "100% Natural Ingredients"
+      ],
+      "badge": null,
+      "rating": 4.8,
+      "reviews": 198,
+      "category": "single",
+      "scent": "citrus",
+      "stock": 180,
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Ocean Breeze Refill",
+      "tagline": "Fresh Scent",
+      "description": "Crisp ocean-inspired freshness for a clean atmosphere. Great for office restrooms, lobbies, and commercial spaces.",
+      "price": 449,
+      "originalPrice": 549,
+      "discount": "18% OFF",
+      "image": "/assets/3refill.png",
+      "features": [
+        "1L Concentrated Formula",
+        "Fresh Ocean Aroma",
+        "4x Spray Bottle Refills",
+        "100% Natural Ingredients"
+      ],
+      "badge": "New",
+      "rating": 4.6,
+      "reviews": 124,
+      "category": "single",
+      "scent": "ocean",
+      "stock": 220,
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "orders": [
+    {
+      "orderNumber": "ECMKJWTSC1",
+      "customerName": "Test Customer",
+      "customerEmail": "test@example.com",
+      "customerPhone": "9876543210",
+      "address": "123 Test Street, Test Area",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400001",
+      "items": [
+        {
+          "id": 1,
+          "name": "Complete Full Pack",
+          "price": 2499,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 2499,
+      "shipping": 0,
+      "total": 2499,
+      "status": "pending",
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "notes": "",
+      "id": 1,
+      "createdAt": "2026-01-18T15:47:31.634Z"
+    },
+    {
+      "orderNumber": "ECMKJXB0D3",
+      "customerName": "romil",
+      "customerEmail": "r@gmail.com",
+      "customerPhone": "6549873212",
+      "address": "amreli",
+      "city": "ahmedabad",
+      "state": "Gujrat",
+      "pincode": "365601",
+      "items": [
+        {
+          "id": 1,
+          "name": "Complete Full Pack",
+          "price": 2499,
+          "quantity": 8
+        },
+        {
+          "id": 2,
+          "name": "Refill Pack Bundle",
+          "price": 1199,
+          "quantity": 8
+        }
+      ],
+      "subtotal": 29584,
+      "shipping": 0,
+      "total": 29584,
+      "status": "pending",
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "notes": "no",
+      "id": 2,
+      "createdAt": "2026-01-18T16:00:55.193Z"
+    }
+  ],
+  "contacts": [],
+  "admins": [
+    {
+      "id": 1,
+      "email": "admin@essenceclean.in",
+      "password": "$2a$10$hash_placeholder",
+      "name": "Admin",
+      "role": "admin",
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}

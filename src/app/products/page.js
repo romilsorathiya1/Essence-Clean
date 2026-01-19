@@ -1,10 +1,10 @@
-import styles from '../../styles/Products.module.css';
-import { FaLeaf, FaRecycle, FaShieldHeart, FaStar, FaCheck, FaTruck, FaArrowRight, FaBuilding, FaPhone, FaEnvelope, FaWhatsapp } from 'react-icons/fa6';
+'use client';
 
-export const metadata = {
-    title: 'Shop | Essence Clean',
-    description: 'Shop our premium eco-friendly cleaning products. All-natural formulas trusted by hotels, cafes, offices, and homes.',
-};
+import { useState } from 'react';
+import styles from '../../styles/Products.module.css';
+import { FaLeaf, FaRecycle, FaShieldHeart, FaStar, FaCheck, FaTruck, FaArrowRight, FaBuilding, FaPhone, FaEnvelope, FaWhatsapp, FaMagnifyingGlass, FaBox } from 'react-icons/fa6';
+import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 const products = [
     {
@@ -12,8 +12,8 @@ const products = [
         name: 'Complete Full Pack',
         tagline: 'Best Value Bundle',
         description: 'The ultimate cleaning bundle for businesses and homes. Perfect for hotels, restaurants, and offices. Includes spray bottles, refill packs, and microfiber cloths.',
-        price: '₹2,499',
-        originalPrice: '₹3,299',
+        price: 2499,
+        originalPrice: 3299,
         discount: '24% OFF',
         image: '/assets/fullPack.png',
         features: [
@@ -32,8 +32,8 @@ const products = [
         name: 'Refill Pack Bundle',
         tagline: 'All 3 Scents',
         description: 'Complete refill set with all three refreshing scents. Ideal for commercial spaces and bulk usage.',
-        price: '₹1,199',
-        originalPrice: '₹1,499',
+        price: 1199,
+        originalPrice: 1499,
         discount: '20% OFF',
         image: '/assets/refillPack.png',
         features: [
@@ -52,8 +52,8 @@ const products = [
         name: 'Lavender Bliss Refill',
         tagline: 'Calming Scent',
         description: 'Soothing lavender fragrance for a premium ambiance. Perfect for hotel rooms, spas, and reception areas.',
-        price: '₹449',
-        originalPrice: '₹549',
+        price: 449,
+        originalPrice: 549,
         discount: '18% OFF',
         image: '/assets/1refill.png',
         features: [
@@ -73,8 +73,8 @@ const products = [
         name: 'Fresh Citrus Refill',
         tagline: 'Energizing Scent',
         description: 'Zesty citrus blend for an energizing clean. Ideal for restaurant kitchens, cafes, and food service areas.',
-        price: '₹449',
-        originalPrice: '₹549',
+        price: 449,
+        originalPrice: 549,
         discount: '18% OFF',
         image: '/assets/2refill.png',
         features: [
@@ -94,8 +94,8 @@ const products = [
         name: 'Ocean Breeze Refill',
         tagline: 'Fresh Scent',
         description: 'Crisp ocean-inspired freshness for a clean atmosphere. Great for office restrooms, lobbies, and commercial spaces.',
-        price: '₹449',
-        originalPrice: '₹549',
+        price: 449,
+        originalPrice: 549,
         discount: '18% OFF',
         image: '/assets/3refill.png',
         features: [
@@ -136,8 +136,21 @@ const benefits = [
 ];
 
 export default function Products() {
+    const { addToCart, openCart } = useCart();
+    const [addedProducts, setAddedProducts] = useState({});
+
     const bundles = products.filter(p => p.category === 'bundle');
     const singleRefills = products.filter(p => p.category === 'single');
+
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        setAddedProducts(prev => ({ ...prev, [product.id]: true }));
+
+        // Reset "Added" state after 2 seconds
+        setTimeout(() => {
+            setAddedProducts(prev => ({ ...prev, [product.id]: false }));
+        }, 2000);
+    };
 
     return (
         <div className={styles.main}>
@@ -169,6 +182,24 @@ export default function Products() {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Track Order Banner */}
+            <section className={styles.trackOrderBanner}>
+                <div className="container">
+                    <div className={styles.trackOrderContent}>
+                        <div className={styles.trackOrderIcon}>
+                            <FaBox />
+                        </div>
+                        <div className={styles.trackOrderText}>
+                            <h3>Already ordered?</h3>
+                            <p>Track your order status anytime without logging in</p>
+                        </div>
+                        <Link href="/track-order" className={styles.trackOrderBtn}>
+                            <FaMagnifyingGlass /> Track Order
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -222,14 +253,20 @@ export default function Products() {
                                     </ul>
 
                                     <div className={styles.priceWrapper}>
-                                        <span className={styles.currentPrice}>{product.price}</span>
-                                        <span className={styles.originalPrice}>{product.originalPrice}</span>
+                                        <span className={styles.currentPrice}>₹{product.price.toLocaleString()}</span>
+                                        <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
                                         <span className={styles.discount}>{product.discount}</span>
                                     </div>
 
-                                    <button className={styles.addToCartBtn}>
-                                        Add to Cart
-                                        <FaArrowRight />
+                                    <button
+                                        className={`${styles.addToCartBtn} ${addedProducts[product.id] ? styles.added : ''}`}
+                                        onClick={() => handleAddToCart(product)}
+                                    >
+                                        {addedProducts[product.id] ? (
+                                            <>Added to Cart <FaCheck /></>
+                                        ) : (
+                                            <>Add to Cart <FaArrowRight /></>
+                                        )}
                                     </button>
                                 </div>
                             </div>
@@ -280,14 +317,20 @@ export default function Products() {
                                     <p className={styles.productDescription}>{product.description}</p>
 
                                     <div className={styles.priceWrapper}>
-                                        <span className={styles.currentPrice}>{product.price}</span>
-                                        <span className={styles.originalPrice}>{product.originalPrice}</span>
+                                        <span className={styles.currentPrice}>₹{product.price.toLocaleString()}</span>
+                                        <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
                                         <span className={styles.discount}>{product.discount}</span>
                                     </div>
 
-                                    <button className={styles.addToCartBtn}>
-                                        Add to Cart
-                                        <FaArrowRight />
+                                    <button
+                                        className={`${styles.addToCartBtn} ${addedProducts[product.id] ? styles.added : ''}`}
+                                        onClick={() => handleAddToCart(product)}
+                                    >
+                                        {addedProducts[product.id] ? (
+                                            <>Added to Cart <FaCheck /></>
+                                        ) : (
+                                            <>Add to Cart <FaArrowRight /></>
+                                        )}
                                     </button>
                                 </div>
                             </div>
@@ -362,10 +405,22 @@ export default function Products() {
                     <div className={styles.ctaBox}>
                         <h2>Not Sure Which Product to Choose?</h2>
                         <p>Start with our Complete Full Pack - get all 3 scents and save 24% on your first order.</p>
-                        <button className={styles.ctaBtn}>Shop the Full Pack</button>
+                        <button
+                            className={styles.ctaBtn}
+                            onClick={() => {
+                                const fullPack = products.find(p => p.id === 1);
+                                if (fullPack) {
+                                    handleAddToCart(fullPack);
+                                    openCart();
+                                }
+                            }}
+                        >
+                            Add Full Pack to Cart
+                        </button>
                     </div>
                 </div>
             </section>
         </div>
     );
 }
+
