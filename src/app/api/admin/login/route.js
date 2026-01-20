@@ -17,7 +17,7 @@ export async function POST(request) {
         }
 
         // Find admin by email
-        const admin = getAdminByEmail(body.email);
+        const admin = await getAdminByEmail(body.email);
 
         if (!admin) {
             return NextResponse.json(

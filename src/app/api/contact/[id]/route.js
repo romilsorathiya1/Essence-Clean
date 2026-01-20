@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
         }
 
         const { id } = await params;
-        const contact = getById('contacts', id);
+        const contact = await getById('contacts', id);
 
         if (!contact) {
             return NextResponse.json(
@@ -53,7 +53,7 @@ export async function PUT(request, { params }) {
         const body = await request.json();
 
         // Check if message exists
-        const existing = getById('contacts', id);
+        const existing = await getById('contacts', id);
         if (!existing) {
             return NextResponse.json(
                 { success: false, error: 'Message not found' },
@@ -62,7 +62,7 @@ export async function PUT(request, { params }) {
         }
 
         // Update message
-        const updatedContact = update('contacts', id, {
+        const updatedContact = await update('contacts', id, {
             isRead: body.isRead ?? existing.isRead,
             isReplied: body.isReplied ?? existing.isReplied,
             replyNote: body.replyNote ?? existing.replyNote
@@ -96,7 +96,7 @@ export async function DELETE(request, { params }) {
         const { id } = await params;
 
         // Check if message exists
-        const existing = getById('contacts', id);
+        const existing = await getById('contacts', id);
         if (!existing) {
             return NextResponse.json(
                 { success: false, error: 'Message not found' },
@@ -105,7 +105,7 @@ export async function DELETE(request, { params }) {
         }
 
         // Delete message
-        const deleted = remove('contacts', id);
+        const deleted = await remove('contacts', id);
 
         if (!deleted) {
             return NextResponse.json(

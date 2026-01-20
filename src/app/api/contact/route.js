@@ -14,7 +14,7 @@ export async function GET() {
             );
         }
 
-        const contacts = getAll('contacts');
+        const contacts = await getAll('contacts');
         // Sort by date, newest first
         contacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
@@ -57,7 +57,7 @@ export async function POST(request) {
         }
 
         // Create contact message
-        const newContact = create('contacts', {
+        const newContact = await create('contacts', {
             name: body.name,
             email: body.email,
             phone: body.phone || '',

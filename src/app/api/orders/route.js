@@ -14,7 +14,7 @@ export async function GET() {
             );
         }
 
-        const orders = getAll('orders');
+        const orders = await getAll('orders');
         // Sort by date, newest first
         orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
@@ -64,7 +64,7 @@ export async function POST(request) {
         const orderNumber = `EC${Date.now().toString(36).toUpperCase()}`;
 
         // Create order
-        const newOrder = create('orders', {
+        const newOrder = await create('orders', {
             orderNumber,
             customerName: body.customerName,
             customerEmail: body.customerEmail,

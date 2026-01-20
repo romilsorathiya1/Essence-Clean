@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAll } from '@/lib/db';
+import { findOrderByNumberAndEmail } from '@/lib/db';
 
 // POST /api/orders/track - Track order by order number and email (public)
 export async function POST(request) {
@@ -16,11 +16,7 @@ export async function POST(request) {
         }
 
         // Find order matching both order number and email
-        const orders = getAll('orders');
-        const order = orders.find(
-            o => o.orderNumber.toLowerCase() === orderNumber.toLowerCase() &&
-                o.customerEmail.toLowerCase() === email.toLowerCase()
-        );
+        const order = await findOrderByNumberAndEmail(orderNumber, email);
 
         if (!order) {
             return NextResponse.json(

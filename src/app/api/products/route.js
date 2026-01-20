@@ -5,7 +5,7 @@ import { requireAuth } from '@/lib/auth';
 // GET /api/products - Get all products (public)
 export async function GET() {
     try {
-        const products = getAll('products');
+        const products = await getAll('products');
         // Only return active products for public API
         const activeProducts = products.filter(p => p.isActive !== false);
 
@@ -48,7 +48,7 @@ export async function POST(request) {
         }
 
         // Create product with defaults
-        const newProduct = create('products', {
+        const newProduct = await create('products', {
             name: body.name,
             tagline: body.tagline || '',
             description: body.description,

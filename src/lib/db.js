@@ -1,121 +1,154 @@
-import fs from 'fs';
-import path from 'path';
+import connectDB from './mongodb';
+import Product from '@/models/Product';
+import Order from '@/models/Order';
+import Contact from '@/models/Contact';
+import Admin from '@/models/Admin';
 
-const DB_PATH = path.join(process.cwd(), 'src', 'data', 'db.json');
+// Map collection names to models
+const models = {
+    products: Product,
+    orders: Order,
+    contacts: Contact,
+    admins: Admin
+};
 
-// Read entire database
-export function readDB() {
+// Ensure database connection
+async function ensureConnection() {
+    await connectDB();
+}
+
+// Get all items from a collection
+export async function getAll(collection) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return [];
+
+    const items = await Model.find({}).lean();
+    // Convert _id to id for backward compatibility
+    return items.map(item => ({
+        ...item,
+        id: item._id.toString(),
+        _id: undefined
+    }));
+}
+
+// Get item by ID from a collection
+export async function getById(collection, id) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return null;
+
     try {
-        const data = fs.readFileSync(DB_PATH, 'utf8');
-        return JSON.parse(data);
+        const item = await Model.findById(id).lean();
+        if (!item) return null;
+        return {
+            ...item,
+            id: item._id.toString(),
+            _id: undefined
+        };
     } catch (error) {
-        console.error('Error reading database:', error);
-        return { products: [], orders: [], contacts: [], admins: [] };
+        // If id is not a valid ObjectId, return null
+        console.error('Error in getById:', error.message);
+        return null;
     }
 }
 
-// Write entire database
-export function writeDB(data) {
+// Create new item in a collection
+export async function create(collection, itemData) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return null;
+
+    const newItem = await Model.create(itemData);
+    const item = newItem.toObject();
+    return {
+        ...item,
+        id: item._id.toString(),
+        _id: undefined
+    };
+}
+
+// Update item by ID in a collection
+export async function update(collection, id, updates) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return null;
+
     try {
-        fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf8');
-        return true;
+        const updatedItem = await Model.findByIdAndUpdate(
+            id,
+            { ...updates, updatedAt: new Date() },
+            { new: true, runValidators: true }
+        ).lean();
+
+        if (!updatedItem) return null;
+        return {
+            ...updatedItem,
+            id: updatedItem._id.toString(),
+            _id: undefined
+        };
     } catch (error) {
-        console.error('Error writing database:', error);
+        console.error('Error in update:', error.message);
+        return null;
+    }
+}
+
+// Delete item by ID from a collection
+export async function remove(collection, id) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return false;
+
+    try {
+        const result = await Model.findByIdAndDelete(id);
+        return result !== null;
+    } catch (error) {
+        console.error('Error in remove:', error.message);
         return false;
     }
 }
 
-// Get all items from a collection
-export function getAll(collection) {
-    const db = readDB();
-    return db[collection] || [];
-}
-
-// Get item by ID from a collection
-export function getById(collection, id) {
-    const db = readDB();
-    const items = db[collection] || [];
-    return items.find(item => item.id === parseInt(id));
-}
-
-// Create new item in a collection
-export function create(collection, item) {
-    const db = readDB();
-    const items = db[collection] || [];
-
-    // Generate new ID
-    const maxId = items.reduce((max, item) => Math.max(max, item.id || 0), 0);
-    const newItem = {
-        ...item,
-        id: maxId + 1,
-        createdAt: new Date().toISOString()
-    };
-
-    db[collection] = [...items, newItem];
-    writeDB(db);
-    return newItem;
-}
-
-// Update item by ID in a collection
-export function update(collection, id, updates) {
-    const db = readDB();
-    const items = db[collection] || [];
-    const index = items.findIndex(item => item.id === parseInt(id));
-
-    if (index === -1) return null;
-
-    const updatedItem = {
-        ...items[index],
-        ...updates,
-        id: items[index].id, // Preserve original ID
-        updatedAt: new Date().toISOString()
-    };
-
-    items[index] = updatedItem;
-    db[collection] = items;
-    writeDB(db);
-    return updatedItem;
-}
-
-// Delete item by ID from a collection
-export function remove(collection, id) {
-    const db = readDB();
-    const items = db[collection] || [];
-    const index = items.findIndex(item => item.id === parseInt(id));
-
-    if (index === -1) return false;
-
-    items.splice(index, 1);
-    db[collection] = items;
-    writeDB(db);
-    return true;
-}
-
 // Get admin by email
-export function getAdminByEmail(email) {
-    const db = readDB();
-    const admins = db.admins || [];
-    return admins.find(admin => admin.email === email);
+export async function getAdminByEmail(email) {
+    await ensureConnection();
+    const admin = await Admin.findOne({ email: email.toLowerCase() }).lean();
+    if (!admin) return null;
+    return {
+        ...admin,
+        id: admin._id.toString(),
+        _id: undefined
+    };
 }
 
 // Get statistics for dashboard
-export function getStats() {
-    const db = readDB();
+export async function getStats() {
+    await ensureConnection();
 
-    const totalProducts = (db.products || []).filter(p => p.isActive).length;
-    const totalOrders = (db.orders || []).length;
-    const pendingOrders = (db.orders || []).filter(o => o.status === 'pending').length;
-    const unreadMessages = (db.contacts || []).filter(c => !c.isRead).length;
+    const [
+        totalProducts,
+        totalOrders,
+        pendingOrders,
+        unreadMessages,
+        deliveredOrders,
+        recentOrders
+    ] = await Promise.all([
+        Product.countDocuments({ isActive: true }),
+        Order.countDocuments({}),
+        Order.countDocuments({ status: 'pending' }),
+        Contact.countDocuments({ isRead: false }),
+        Order.find({ status: 'delivered' }).lean(),
+        Order.find({}).sort({ createdAt: -1 }).limit(5).lean()
+    ]);
 
-    // Calculate revenue
-    const totalRevenue = (db.orders || [])
-        .filter(o => o.status === 'delivered')
-        .reduce((sum, order) => sum + (order.total || 0), 0);
+    // Calculate revenue from delivered orders
+    const totalRevenue = deliveredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
 
-    // Recent orders (last 5)
-    const recentOrders = (db.orders || [])
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 5);
+    // Format recent orders with id
+    const formattedRecentOrders = recentOrders.map(order => ({
+        ...order,
+        id: order._id.toString(),
+        _id: undefined
+    }));
 
     return {
         totalProducts,
@@ -123,6 +156,22 @@ export function getStats() {
         pendingOrders,
         unreadMessages,
         totalRevenue,
-        recentOrders
+        recentOrders: formattedRecentOrders
+    };
+}
+
+// Find order by order number and email (for order tracking)
+export async function findOrderByNumberAndEmail(orderNumber, email) {
+    await ensureConnection();
+    const order = await Order.findOne({
+        orderNumber: { $regex: new RegExp(`^${orderNumber}$`, 'i') },
+        customerEmail: { $regex: new RegExp(`^${email}$`, 'i') }
+    }).lean();
+
+    if (!order) return null;
+    return {
+        ...order,
+        id: order._id.toString(),
+        _id: undefined
     };
 }

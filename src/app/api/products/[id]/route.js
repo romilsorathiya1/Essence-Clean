@@ -6,7 +6,7 @@ import { requireAuth } from '@/lib/auth';
 export async function GET(request, { params }) {
     try {
         const { id } = await params;
-        const product = getById('products', id);
+        const product = await getById('products', id);
 
         if (!product) {
             return NextResponse.json(
@@ -44,7 +44,7 @@ export async function PUT(request, { params }) {
         const body = await request.json();
 
         // Check if product exists
-        const existing = getById('products', id);
+        const existing = await getById('products', id);
         if (!existing) {
             return NextResponse.json(
                 { success: false, error: 'Product not found' },
@@ -53,7 +53,7 @@ export async function PUT(request, { params }) {
         }
 
         // Update product
-        const updatedProduct = update('products', id, {
+        const updatedProduct = await update('products', id, {
             name: body.name ?? existing.name,
             tagline: body.tagline ?? existing.tagline,
             description: body.description ?? existing.description,
@@ -99,7 +99,7 @@ export async function DELETE(request, { params }) {
         const { id } = await params;
 
         // Check if product exists
-        const existing = getById('products', id);
+        const existing = await getById('products', id);
         if (!existing) {
             return NextResponse.json(
                 { success: false, error: 'Product not found' },
@@ -108,7 +108,7 @@ export async function DELETE(request, { params }) {
         }
 
         // Delete product
-        const deleted = remove('products', id);
+        const deleted = await remove('products', id);
 
         if (!deleted) {
             return NextResponse.json(

@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
         }
 
         const { id } = await params;
-        const order = getById('orders', id);
+        const order = await getById('orders', id);
 
         if (!order) {
             return NextResponse.json(
@@ -53,7 +53,7 @@ export async function PUT(request, { params }) {
         const body = await request.json();
 
         // Check if order exists
-        const existing = getById('orders', id);
+        const existing = await getById('orders', id);
         if (!existing) {
             return NextResponse.json(
                 { success: false, error: 'Order not found' },
@@ -71,7 +71,7 @@ export async function PUT(request, { params }) {
         }
 
         // Update order
-        const updatedOrder = update('orders', id, {
+        const updatedOrder = await update('orders', id, {
             status: body.status ?? existing.status,
             paymentStatus: body.paymentStatus ?? existing.paymentStatus,
             trackingNumber: body.trackingNumber ?? existing.trackingNumber,
