@@ -460,9 +460,10 @@
 }
 
 .shopBtn:hover {
-    background: var(--accent-gold);
+    background: #073d2e;
+    color: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(197, 160, 89, 0.4);
+    box-shadow: 0 5px 20px rgba(10, 61, 46, 0.3);
 
 /* Empty Cart View */
 .emptyContainer {
