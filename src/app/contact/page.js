@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from '../../styles/Contact.module.css';
 import { FaPhone, FaEnvelope, FaWhatsapp, FaLocationDot, FaClock, FaInstagram, FaFacebook, FaTwitter, FaPaperPlane, FaCheck } from 'react-icons/fa6';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -192,20 +193,19 @@ export default function Contact() {
                                             </div>
                                             <div className={styles.formGroup}>
                                                 <label htmlFor="subject">Subject</label>
-                                                <select
-                                                    id="subject"
-                                                    name="subject"
+                                                <CustomSelect
+                                                    options={[
+                                                        { value: '', label: 'Select a topic' },
+                                                        { value: 'product', label: 'Product Inquiry' },
+                                                        { value: 'order', label: 'Order Status' },
+                                                        { value: 'bulk', label: 'Bulk Order / B2B' },
+                                                        { value: 'feedback', label: 'Feedback' },
+                                                        { value: 'other', label: 'Other' }
+                                                    ]}
                                                     value={formData.subject}
-                                                    onChange={handleChange}
-                                                    required
-                                                >
-                                                    <option value="">Select a topic</option>
-                                                    <option value="product">Product Inquiry</option>
-                                                    <option value="order">Order Status</option>
-                                                    <option value="bulk">Bulk Order / B2B</option>
-                                                    <option value="feedback">Feedback</option>
-                                                    <option value="other">Other</option>
-                                                </select>
+                                                    onChange={(value) => setFormData({ ...formData, subject: value })}
+                                                    placeholder="Select a subject"
+                                                />
                                             </div>
                                         </div>
 

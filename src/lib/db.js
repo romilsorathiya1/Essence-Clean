@@ -32,6 +32,25 @@ export async function getAll(collection) {
     }));
 }
 
+// Find items with a custom query
+export async function find(collection, query = {}) {
+    await ensureConnection();
+    const Model = models[collection];
+    if (!Model) return [];
+
+    try {
+        const items = await Model.find(query).lean();
+        return items.map(item => ({
+            ...item,
+            id: item._id.toString(),
+            _id: undefined
+        }));
+    } catch (error) {
+        console.error('Error in find:', error.message);
+        return [];
+    }
+}
+
 // Get item by ID from a collection
 export async function getById(collection, id) {
     await ensureConnection();

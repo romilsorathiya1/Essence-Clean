@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { getAll, create } from '@/lib/db';
+import { getAll, create, find } from '@/lib/db';
 import { requireAuth } from '@/lib/auth';
 import { sendOrderConfirmation } from '@/lib/email';
 import { generateInvoicePDF } from '@/lib/invoice';
 // invoice import removed
 
 // GET /api/orders - Get all orders (admin only)
-export async function GET() {
+export async function GET(request) {
     try {
         // Check authentication
         const { authorized } = await requireAuth();
@@ -17,7 +17,21 @@ export async function GET() {
             );
         }
 
-        const orders = await getAll('orders');
+        const { searchParams } = new URL(request.url);
+        const search = searchParams.get('search');
+        const status = searchParams.get('status');
+
+        const query = {};
+
+        if (search) {
+            query.orderNumber = { $regex: search, $options: 'i' };
+        }
+
+        if (status && status !== 'all') {
+            query.status = status;
+        }
+
+        const orders = await find('orders', query);
         // Sort by date, newest first
         orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 

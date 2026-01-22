@@ -3,16 +3,23 @@
 import { useEffect, useState } from 'react';
 import styles from '../../../styles/Admin.module.css';
 import { FaEnvelope, FaTrash, FaCheck, FaEye, FaXmark } from 'react-icons/fa6';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function AdminMessages() {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch('/api/contact');
+            const queryParams = new URLSearchParams();
+            if (searchQuery) queryParams.append('search', searchQuery);
+            if (statusFilter !== 'all') queryParams.append('status', statusFilter);
+
+            const response = await fetch(`/api/contact?${queryParams.toString()}`);
             const data = await response.json();
 
             if (data.success) {
@@ -27,7 +34,7 @@ export default function AdminMessages() {
 
     useEffect(() => {
         fetchMessages();
-    }, []);
+    }, [searchQuery, statusFilter]);
 
     const openMessageModal = async (message) => {
         setSelectedMessage(message);
@@ -118,6 +125,33 @@ export default function AdminMessages() {
                 <p>Contact form submissions from your website {unreadCount > 0 && `(${unreadCount} unread)`}</p>
             </div>
 
+            <div className={styles.filters} style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+                <input
+                    type="text"
+                    placeholder="Search by Name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                        padding: '0.6rem',
+                        borderRadius: '0.5rem',
+                        border: '1px solid #e5e7eb',
+                        width: '300px'
+                    }}
+                />
+
+                <CustomSelect
+                    options={[
+                        { value: 'all', label: 'All Messages' },
+                        { value: 'unread', label: 'Unread' },
+                        { value: 'read', label: 'Read' },
+                        { value: 'replied', label: 'Replied' }
+                    ]}
+                    value={statusFilter}
+                    onChange={(value) => setStatusFilter(value)}
+                    style={{ width: '200px' }}
+                />
+            </div>
+
             <div className={styles.tableCard}>
                 <div className={styles.tableHeader}>
                     <h2>All Messages ({messages.length})</h2>
@@ -139,9 +173,15 @@ export default function AdminMessages() {
                             {messages.map((message) => (
                                 <tr key={message.id} style={{ background: !message.isRead ? 'rgba(239, 68, 68, 0.05)' : 'transparent' }}>
                                     <td>
-                                        <span className={`${styles.badge} ${message.isRead ? styles.read : styles.unread}`}>
-                                            {message.isRead ? 'Read' : 'Unread'}
-                                        </span>
+                                        <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }}>
+                                            {message.isReplied ? (
+                                                <span className={`${styles.badge} ${styles.confirmed}`}>Replied</span>
+                                            ) : message.isRead ? (
+                                                <span className={`${styles.badge} ${styles.read}`}>Read</span>
+                                            ) : (
+                                                <span className={`${styles.badge} ${styles.unread}`}>Unread</span>
+                                            )}
+                                        </div>
                                     </td>
                                     <td><strong>{message.name}</strong></td>
                                     <td>{message.email}</td>
@@ -172,8 +212,8 @@ export default function AdminMessages() {
                 ) : (
                     <div className={styles.emptyState}>
                         <FaEnvelope />
-                        <h3>No messages yet</h3>
-                        <p>Contact form submissions will appear here.</p>
+                        <h3>No messages found</h3>
+                        <p>Try adjusting your search or filters.</p>
                     </div>
                 )}
             </div>

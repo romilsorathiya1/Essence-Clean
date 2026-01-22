@@ -3,16 +3,37 @@
 import { useEffect, useState } from 'react';
 import styles from '../../../styles/Admin.module.css';
 import { FaEye, FaCartShopping, FaXmark } from 'react-icons/fa6';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function AdminOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
+
+    const statusOptions = [
+        { value: 'pending', label: 'Pending' },
+        { value: 'confirmed', label: 'Confirmed' },
+        { value: 'processing', label: 'Processing' },
+        { value: 'shipped', label: 'Shipped' },
+        { value: 'delivered', label: 'Delivered' },
+        { value: 'cancelled', label: 'Cancelled' }
+    ];
+
+    const filterOptions = [
+        { value: 'all', label: 'All Status' },
+        ...statusOptions
+    ];
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch('/api/orders');
+            const queryParams = new URLSearchParams();
+            if (searchQuery) queryParams.append('search', searchQuery);
+            if (statusFilter !== 'all') queryParams.append('status', statusFilter);
+
+            const response = await fetch(`/api/orders?${queryParams.toString()}`);
             const data = await response.json();
 
             if (data.success) {
@@ -27,7 +48,7 @@ export default function AdminOrders() {
 
     useEffect(() => {
         fetchOrders();
-    }, []);
+    }, [searchQuery, statusFilter]);
 
     const openOrderModal = (order) => {
         setSelectedOrder(order);
@@ -58,6 +79,10 @@ export default function AdminOrders() {
         }
     };
 
+    const handleDownloadInvoice = (orderId) => {
+        window.open(`/api/admin/orders/${orderId}/invoice`, '_blank');
+    };
+
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-IN', {
             year: 'numeric',
@@ -81,6 +106,28 @@ export default function AdminOrders() {
             <div className={styles.pageHeader}>
                 <h1>Orders</h1>
                 <p>Manage customer orders and update their status</p>
+            </div>
+
+            <div className={styles.filters} style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+                <input
+                    type="text"
+                    placeholder="Search by Order ID..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                        padding: '0.6rem',
+                        borderRadius: '0.5rem',
+                        border: '1px solid #e5e7eb',
+                        width: '300px'
+                    }}
+                />
+
+                <CustomSelect
+                    options={filterOptions}
+                    value={statusFilter}
+                    onChange={(value) => setStatusFilter(value)}
+                    style={{ width: '200px' }}
+                />
             </div>
 
             <div className={styles.tableCard}>
@@ -114,18 +161,13 @@ export default function AdminOrders() {
                                     <td>{order.items?.length || 0} items</td>
                                     <td>₹{order.total?.toLocaleString()}</td>
                                     <td>
-                                        <select
-                                            value={order.status}
-                                            onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                                            className={styles.statusSelect}
-                                        >
-                                            <option value="pending">Pending</option>
-                                            <option value="confirmed">Confirmed</option>
-                                            <option value="processing">Processing</option>
-                                            <option value="shipped">Shipped</option>
-                                            <option value="delivered">Delivered</option>
-                                            <option value="cancelled">Cancelled</option>
-                                        </select>
+                                        <div style={{ width: '140px' }}>
+                                            <CustomSelect
+                                                options={statusOptions}
+                                                value={order.status}
+                                                onChange={(value) => handleStatusChange(order.id, value)}
+                                            />
+                                        </div>
                                     </td>
                                     <td>
                                         <span className={`${styles.badge} ${order.paymentStatus === 'paid' ? styles.paid : styles.pending}`}>
@@ -205,18 +247,11 @@ export default function AdminOrders() {
 
                                 <div className={styles.orderSection}>
                                     <h4>Update Status</h4>
-                                    <select
+                                    <CustomSelect
+                                        options={statusOptions}
                                         value={selectedOrder.status}
-                                        onChange={(e) => handleStatusChange(selectedOrder.id, e.target.value)}
-                                        className={styles.statusSelect}
-                                    >
-                                        <option value="pending">Pending</option>
-                                        <option value="confirmed">Confirmed</option>
-                                        <option value="processing">Processing</option>
-                                        <option value="shipped">Shipped</option>
-                                        <option value="delivered">Delivered</option>
-                                        <option value="cancelled">Cancelled</option>
-                                    </select>
+                                        onChange={(value) => handleStatusChange(selectedOrder.id, value)}
+                                    />
                                 </div>
 
                                 {selectedOrder.notes && (
@@ -229,6 +264,13 @@ export default function AdminOrders() {
                         </div>
 
                         <div className={styles.modalFooter}>
+                            <button
+                                onClick={() => handleDownloadInvoice(selectedOrder.id)}
+                                className={styles.saveBtn}
+                                style={{ marginRight: '1rem', backgroundColor: '#0A3D2E' }}
+                            >
+                                Download Invoice
+                            </button>
                             <button onClick={() => setShowModal(false)} className={styles.cancelBtn}>
                                 Close
                             </button>

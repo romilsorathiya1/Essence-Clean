@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { getAll, create } from '@/lib/db';
+import { getAll, create, find } from '@/lib/db';
 import { requireAuth } from '@/lib/auth';
 
 // GET /api/contact - Get all messages (admin only)
-export async function GET() {
+export async function GET(request) {
     try {
         // Check authentication
         const { authorized } = await requireAuth();
@@ -14,7 +14,28 @@ export async function GET() {
             );
         }
 
-        const contacts = await getAll('contacts');
+        const { searchParams } = new URL(request.url);
+        const search = searchParams.get('search');
+        const status = searchParams.get('status');
+
+        const query = {};
+
+        if (search) {
+            query.name = { $regex: search, $options: 'i' };
+        }
+
+        if (status && status !== 'all') {
+            if (status === 'unread') query.isRead = false;
+            if (status === 'read') {
+                query.isRead = true;
+                query.isReplied = false;
+            }
+            if (status === 'replied') query.isReplied = true;
+        }
+
+        // Import find dynamically if not already imported, or use existing generic find
+        // Note: ensuring 'find' is imported from db.js
+        const contacts = await find('contacts', query);
         // Sort by date, newest first
         contacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 

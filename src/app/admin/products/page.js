@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../../../styles/Admin.module.css';
 import { FaPlus, FaPen, FaTrash, FaBox, FaXmark } from 'react-icons/fa6';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function AdminProducts() {
     const [products, setProducts] = useState([]);
@@ -365,27 +366,27 @@ export default function AdminProducts() {
                                     <div className={styles.formRow}>
                                         <div className={styles.formGroup}>
                                             <label>Category</label>
-                                            <select
-                                                name="category"
+                                            <CustomSelect
+                                                options={[
+                                                    { value: 'single', label: 'Single' },
+                                                    { value: 'bundle', label: 'Bundle' }
+                                                ]}
                                                 value={formData.category}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="single">Single</option>
-                                                <option value="bundle">Bundle</option>
-                                            </select>
+                                                onChange={(value) => setFormData({ ...formData, category: value })}
+                                            />
                                         </div>
                                         <div className={styles.formGroup}>
                                             <label>Scent</label>
-                                            <select
-                                                name="scent"
+                                            <CustomSelect
+                                                options={[
+                                                    { value: '', label: 'None' },
+                                                    { value: 'lavender', label: 'Lavender' },
+                                                    { value: 'citrus', label: 'Citrus' },
+                                                    { value: 'ocean', label: 'Ocean' }
+                                                ]}
                                                 value={formData.scent}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="">None</option>
-                                                <option value="lavender">Lavender</option>
-                                                <option value="citrus">Citrus</option>
-                                                <option value="ocean">Ocean</option>
-                                            </select>
+                                                onChange={(value) => setFormData({ ...formData, scent: value })}
+                                            />
                                         </div>
                                     </div>
 
