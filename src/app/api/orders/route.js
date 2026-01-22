@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getAll, create } from '@/lib/db';
 import { requireAuth } from '@/lib/auth';
+import { sendOrderConfirmation } from '@/lib/email';
+import { generateInvoicePDF } from '@/lib/invoice';
+// invoice import removed
 
 // GET /api/orders - Get all orders (admin only)
 export async function GET() {
@@ -63,9 +66,13 @@ export async function POST(request) {
         // Generate order number
         const orderNumber = `EC${Date.now().toString(36).toUpperCase()}`;
 
+        // Generate tracking ID
+        const trackingId = `TRACK-${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
         // Create order
         const newOrder = await create('orders', {
             orderNumber,
+            trackingId,
             customerName: body.customerName,
             customerEmail: body.customerEmail,
             customerPhone: body.customerPhone,
@@ -83,6 +90,15 @@ export async function POST(request) {
             notes: body.notes || ''
         });
 
+        // Send order confirmation email (async)
+        try {
+            const pdfBuffer = await generateInvoicePDF(newOrder);
+            await sendOrderConfirmation(newOrder, pdfBuffer);
+            console.log(`Order confirmation email sent for order ${orderNumber}`);
+        } catch (emailError) {
+            console.error('Failed to send order confirmation email:', emailError);
+        }
+
         return NextResponse.json({
             success: true,
             data: newOrder,
@@ -96,3 +112,4 @@ export async function POST(request) {
         );
     }
 }
+
