@@ -74,7 +74,7 @@
     font-weight: 400;
     font-size: clamp(2rem, 5vw, 3.5rem);
     color: var(--primary-dark);
-    margin-bottom: -1rem;
+    margin-bottom: 0.15rem;
 }
 
 .titleBottom {
@@ -603,54 +603,157 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive Design */
+
+/* Large Screens */
+@media (min-width: 1441px) {
+    .galleryArch {
+        width: 1000px;
+        height: 1150px;
+    }
+
+    .imageBox {
+        width: 900px;
+        height: 850px;
+    }
+}
+
+/* Laptop / Tablet Landscape */
 @media (max-width: 1024px) {
-    .title {
-        font-size: 3.5rem;
+    .galleryArch {
+        width: 700px;
+        height: 850px;
+        padding: 40px 40px 0;
+    }
+
+    .imageBox {
+        width: 620px;
+        height: 600px;
+    }
+
+    .productGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 
     .benefitGrid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .surfaceGrid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
     }
 
     .vsContainer {
         gap: 3rem;
     }
-}
 
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-        text-align: center;
+    .vsTitle {
+        font-size: 3rem;
     }
 
-    .heroContent {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .ctaBox h2 {
+        font-size: 3rem;
+    }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .hero {
+        padding: 4rem 0;
+        min-height: 80vh;
+    }
+
+    .galleryArch {
+        width: 90%;
+        max-width: 500px;
+        height: 650px;
+        padding: 30px 30px 0;
+    }
+
+    .imageBox {
+        width: 100%;
+        height: 450px;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+    }
+
+    .titleTop {
+        font-size: 1.5rem;
+    }
+
+    .titleBottom {
+        font-size: 3.5rem;
     }
 
     .subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
         margin-inline: auto;
     }
 
-    .cta {
-        justify-content: center;
+    .primaryBtn {
+        padding: 1rem 2.5rem;
+        font-size: 0.9rem;
     }
 
-    .stats {
-        justify-content: center;
+    .productGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .productCard {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .surfaceGrid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+
+    .surfaceCard {
+        padding: 0.75rem;
+    }
+
+    .surfaceIcon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .surfaceCard p {
+        font-size: 0.75rem;
     }
 
     .benefitGrid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .benefitCard {
+        min-height: 200px;
     }
 
     .vsContainer {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .vsTitle {
         font-size: 2.5rem;
+    }
+
+    .vsContent p {
+        font-size: 1rem;
     }
 
     .ctaBox {
@@ -659,5 +762,207 @@
 
     .ctaBox h2 {
         font-size: 2.5rem;
+    }
+
+    .ctaBox p {
+        font-size: 1rem;
+    }
+
+    .whiteBtn {
+        padding: 1rem 2.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Mobile Large */
+@media (max-width: 480px) {
+    .hero {
+        padding: 3rem 0;
+        min-height: 70vh;
+    }
+
+    .galleryArch {
+        width: 95%;
+        height: 550px;
+        padding: 20px 20px 0;
+        margin-top: 2rem;
+    }
+
+    .imageBox {
+        height: 380px;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+    }
+
+    .titleTop {
+        font-size: 1.2rem;
+        margin-bottom: -0.5rem;
+    }
+
+    .titleBottom {
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+    }
+
+    .primaryBtn {
+        padding: 0.9rem 2rem;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    .products {
+        padding: 4rem 0;
+    }
+
+    .productInfo {
+        padding: 1.5rem;
+    }
+
+    .productInfo h3 {
+        font-size: 1.5rem;
+    }
+
+    .productDescription {
+        font-size: 0.9rem;
+    }
+
+    .productBtn {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .versatilityShowcase {
+        padding: 4rem 0;
+    }
+
+    .versatilityTitle {
+        font-size: 2rem;
+    }
+
+    .versatilitySubtitle {
+        font-size: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .surfaceGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .surfaceCard {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .surfaceIcon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .surfaceCard p {
+        font-size: 0.7rem;
+    }
+
+    .benefits {
+        padding: 2.5rem 0;
+    }
+
+    .benefitsContainer {
+        max-width: 100%;
+    }
+
+    .sectionTitle {
+        font-size: 2rem;
+    }
+
+    .sectionSubtitle {
+        font-size: 1rem;
+    }
+
+    .benefitCard {
+        min-height: 180px;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .iconWrapper {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0.75rem;
+    }
+
+    .icon {
+        font-size: 1.5rem;
+    }
+
+    .benefitCard h3 {
+        font-size: 1.4rem;
+    }
+
+    .benefitCard p {
+        font-size: 0.9rem;
+    }
+
+    .vsTitle {
+        font-size: 2rem;
+    }
+
+    .vsContent p {
+        font-size: 0.95rem;
+    }
+
+    .finalCta {
+        padding: 3rem 0 6rem;
+    }
+
+    .ctaBox {
+        padding: 2.5rem 1.25rem;
+        border-radius: 30px;
+    }
+
+    .ctaBox h2 {
+        font-size: 2rem;
+    }
+
+    .ctaBox p {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .whiteBtn {
+        padding: 1rem 2rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile Small */
+@media (max-width: 360px) {
+    .galleryArch {
+        height: 500px;
+    }
+
+    .imageBox {
+        height: 340px;
+    }
+
+    .titleBottom {
+        font-size: 2.2rem;
+    }
+
+    .surfaceGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ctaBox h2 {
+        font-size: 1.75rem;
     }
 }

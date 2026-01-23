@@ -48,7 +48,7 @@
     font-weight: 400;
     font-size: clamp(1.5rem, 4vw, 2rem);
     color: var(--accent-gold);
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.15rem;
 }
 
 .titleMain {
@@ -445,16 +445,33 @@
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 3rem 1rem;
+    }
+
+    .titleMain {
+        font-size: 2.25rem;
+    }
+
     .formCard {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .formCard h2 {
         font-size: 1.5rem;
     }
 
+    .formGroup input,
+    .formGroup select,
+    .formGroup textarea {
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+        padding: 0.8rem 1rem;
+    }
+
     .submitBtn {
         width: 100%;
+        padding: 1rem;
     }
 
     .socialLink {
@@ -464,5 +481,17 @@
 
     .faqItem {
         padding: 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .infoCard {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .socialLinks {
+        flex-wrap: wrap;
     }
 }

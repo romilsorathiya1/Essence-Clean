@@ -46,7 +46,7 @@
     font-weight: 400;
     font-size: clamp(1.5rem, 4vw, 2rem);
     color: var(--accent-gold);
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.15rem;
 }
 
 .titleMain {
@@ -651,6 +651,14 @@
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 3rem 1rem;
+    }
+
+    .titleMain {
+        font-size: 2rem;
+    }
+
     .missionStats {
         grid-template-columns: 1fr;
     }
@@ -677,15 +685,30 @@
         font-size: 2rem;
     }
 
+    .visualNumber {
+        font-size: 3.5rem;
+    }
+
     .ctaButtons {
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
 
     .ctaPrimary,
     .ctaSecondary {
         width: 100%;
-        max-width: 280px;
+        max-width: 100%;
         justify-content: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .statNumber {
+        font-size: 2rem;
+    }
+
+    .visualCard {
+        padding: 2rem 1.5rem;
     }
 }

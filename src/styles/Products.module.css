@@ -46,7 +46,7 @@
     font-weight: 400;
     font-size: clamp(1.5rem, 4vw, 2rem);
     color: var(--accent-gold);
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.15rem;
 }
 
 .titleMain {
@@ -788,10 +788,15 @@
 @media (max-width: 1200px) {
     .productsGrid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 
     .refillsGrid {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bundleGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -834,13 +839,33 @@
 
 @media (max-width: 768px) {
     .hero {
-        padding: 5rem 1.5rem;
+        padding: 4rem 1.5rem;
         min-height: 40vh;
+    }
+
+    .heroTitle {
+        margin-bottom: 1rem;
+    }
+
+    .titleAccent {
+        font-size: 1.25rem;
+    }
+
+    .titleMain {
+        font-size: 2.5rem;
+    }
+
+    .heroSubtitle {
+        font-size: 1rem;
+    }
+
+    .benefitsBar {
+        padding: 1.5rem 0;
     }
 
     .benefitsGrid {
         grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
     .benefitItem {
@@ -849,13 +874,32 @@
         gap: 0.75rem;
     }
 
+    .benefitIcon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
     .benefitText {
         align-items: center;
+    }
+
+    .benefitText strong {
+        font-size: 0.9rem;
+    }
+
+    .benefitText span {
+        font-size: 0.75rem;
     }
 
     .productsGrid {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+
+    .productCard {
+        max-width: 500px;
+        margin: 0 auto;
     }
 
     .refillsGrid {
@@ -864,22 +908,47 @@
     }
 
     .productImageWrapper {
-        height: 250px;
+        height: 280px;
+    }
+
+    .productContent {
+        padding: 1.75rem;
+    }
+
+    .surfacesSection {
+        padding: 4rem 0;
     }
 
     .surfacesGrid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
     }
 
     .surfaceItem {
         min-width: auto;
+        padding: 1.25rem;
+    }
+
+    .surfaceItem svg {
+        font-size: 2rem;
+    }
+
+    .surfaceItem span {
+        font-size: 0.9rem;
+    }
+
+    .b2bSection {
+        padding: 4rem 0;
     }
 
     .b2bGrid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+    }
+
+    .b2bCard {
+        padding: 1.75rem;
     }
 
     .b2bCta {
@@ -898,23 +967,81 @@
         justify-content: center;
     }
 
+    .ctaSection {
+        padding: 4rem 0;
+    }
+
     .ctaBox {
         padding: 3rem 2rem;
+    }
+
+    .ctaBox h2 {
+        font-size: 2rem;
+    }
+
+    .ctaBox p {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 3rem 1rem;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.5rem 1.25rem;
+        letter-spacing: 1.5px;
+    }
+
+    .titleAccent {
+        font-size: 1.1rem;
+    }
+
+    .titleMain {
+        font-size: 2rem;
+    }
+
+    .heroSubtitle {
+        font-size: 0.95rem;
+    }
+
     .benefitsGrid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .benefitItem {
         flex-direction: row;
         text-align: left;
+        padding: 0.75rem;
+        background: rgba(10, 61, 46, 0.03);
+        border-radius: 10px;
+    }
+
+    .benefitIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
 
     .benefitText {
         align-items: flex-start;
+    }
+
+    .trackOrderBanner {
+        padding: 1.25rem 0;
+    }
+
+    .trackOrderBtn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .productsSection,
+    .refillsSection {
+        padding: 3rem 0;
     }
 
     .productContent {
@@ -925,8 +1052,60 @@
         font-size: 1.5rem;
     }
 
+    .productDescription {
+        font-size: 0.85rem;
+    }
+
     .currentPrice {
         font-size: 1.75rem;
+    }
+
+    .addToCartBtn {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .surfacesGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .surfaceItem {
+        padding: 1rem;
+    }
+
+    .surfaceItem svg {
+        font-size: 1.75rem;
+    }
+
+    .surfaceItem span {
+        font-size: 0.85rem;
+    }
+
+    .b2bSection {
+        padding: 3rem 0;
+    }
+
+    .b2bIconLarge {
+        width: 70px;
+        height: 70px;
+    }
+
+    .b2bIconLarge svg {
+        font-size: 1.75rem;
+    }
+
+    .b2bBadge {
+        font-size: 0.75rem;
+        padding: 0.4rem 1.25rem;
+    }
+
+    .b2bTitle {
+        font-size: 2rem;
+    }
+
+    .b2bSubtitle {
+        font-size: 1rem;
     }
 
     .b2bCard {
@@ -935,6 +1114,15 @@
 
     .b2bCardIcon {
         font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .b2bCard h3 {
+        font-size: 1.1rem;
+    }
+
+    .b2bCard p {
+        font-size: 0.85rem;
     }
 
     .b2bCta {
@@ -943,5 +1131,52 @@
 
     .b2bCtaContent h3 {
         font-size: 1.3rem;
+    }
+
+    .b2bCtaContent p {
+        font-size: 0.9rem;
+    }
+
+    .b2bPhoneBtn,
+    .b2bWhatsappBtn,
+    .b2bEmailBtn {
+        padding: 0.9rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .ctaBox {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .ctaBox h2 {
+        font-size: 1.75rem;
+    }
+
+    .ctaBox p {
+        font-size: 0.95rem;
+    }
+
+    .ctaBtn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 360px) {
+    .titleMain {
+        font-size: 1.75rem;
+    }
+
+    .productImageWrapper {
+        height: 240px;
+    }
+
+    .surfacesGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .b2bTitle {
+        font-size: 1.75rem;
     }
 }

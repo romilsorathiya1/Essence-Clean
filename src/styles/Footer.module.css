@@ -86,7 +86,23 @@
     color: var(--accent-gold);
 }
 
+@media (max-width: 992px) {
+    .top {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .links {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .footer {
+        padding: 4rem 0 2rem;
+    }
+
     .top {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -94,11 +110,72 @@
 
     .links {
         grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .linkGroup h3 {
+        font-size: 1rem;
+    }
+
+    .linkGroup a {
+        font-size: 0.85rem;
     }
 
     .bottom {
         flex-direction: column;
         gap: 1.5rem;
         text-align: center;
+    }
+
+    .socials {
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 3rem 0 1.5rem;
+    }
+
+    .top {
+        gap: 2.5rem;
+    }
+
+    .brand {
+        max-width: 100%;
+    }
+
+    .logoText {
+        font-size: 1.6rem;
+    }
+
+    .logoSubtext {
+        font-size: 0.7rem;
+    }
+
+    .description {
+        font-size: 0.9rem;
+    }
+
+    .links {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .linkGroup {
+        text-align: center;
+    }
+
+    .bottom {
+        font-size: 0.8rem;
+        padding-top: 1.5rem;
+    }
+
+    .socials {
+        gap: 1rem;
+    }
+
+    .socials a {
+        font-size: 1.1rem;
     }
 }

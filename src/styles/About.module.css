@@ -48,7 +48,7 @@
     font-weight: 400;
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     color: var(--accent-gold);
-    margin-bottom: -0.5rem;
+    margin-bottom: 0.15rem;
 }
 
 .titleMain {
@@ -624,11 +624,20 @@
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 4rem 1rem;
+    }
+
+    .titleMain {
+        font-size: 2.5rem;
+    }
+
     .floatingCard {
         position: relative;
         bottom: auto;
         right: auto;
         margin-top: 2rem;
+        width: 100%;
     }
 
     .timelineContent {
@@ -641,5 +650,35 @@
 
     .statsGrid {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .timeline {
+        padding-left: 30px;
+    }
+
+    .timelineItem,
+    .timelineRight,
+    .timelineLeft {
+        padding-left: 30px;
+    }
+
+    .timelineRight::before,
+    .timelineLeft::before {
+        left: -23px;
+        width: 10px;
+        height: 10px;
+    }
+
+    .timelineRight::after,
+    .timelineLeft::after {
+        left: -13px;
+        width: 15px;
+    }
+
+    .statNumber {
+        font-size: 2rem;
     }
 }

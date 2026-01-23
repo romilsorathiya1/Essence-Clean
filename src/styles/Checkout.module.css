@@ -249,7 +249,6 @@
     width: 60px;
     height: 60px;
     border-radius: 10px;
-    overflow: hidden;
     background: var(--off-white);
     border: 1px solid rgba(10, 61, 46, 0.1);
 }
@@ -257,24 +256,27 @@
 .itemImage img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    padding: 4px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .itemQty {
     position: absolute;
-    top: -6px;
-    right: -6px;
-    width: 20px;
-    height: 20px;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
     background: var(--primary-dark);
     color: var(--white);
     border-radius: 50%;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .itemInfo h4 {
@@ -464,6 +466,7 @@
     color: var(--white);
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(10, 61, 46, 0.3);
+}
 
 /* Empty Cart View */
 .emptyContainer {
@@ -527,5 +530,36 @@
         gap: 1rem;
         align-items: center;
     }
+
+    .formSection,
+    .summaryCard {
+        padding: 1.25rem 1rem;
+    }
+
+    .confirmationBox {
+        padding: 1.5rem 1rem;
+    }
+
+    .confirmationActions {
+        flex-direction: column;
+    }
+
+    .paymentOption {
+        padding: 0.8rem 1rem;
+    }
 }
+
+@media (max-width: 360px) {
+    .header h1 {
+        font-size: 1.75rem;
+    }
+
+    .placeOrderBtn {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .summaryRow {
+        font-size: 0.9rem;
+    }
 }
