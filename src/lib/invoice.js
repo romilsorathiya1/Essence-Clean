@@ -1,227 +1,553 @@
-import puppeteer from 'puppeteer';
+import { PDFDocument, rgb, StandardFonts, PDFOperator, PDFNumber } from 'pdf-lib';
+import QRCode from 'qrcode';
+
+// Brand colors (converted to 0-1 range for pdf-lib)
+const BRAND_GREEN = rgb(10 / 255, 61 / 255, 46 / 255);       // #0A3D2E
+const BRAND_GOLD = rgb(197 / 255, 160 / 255, 89 / 255);      // #C5A059
+const GRAY_50 = rgb(249 / 255, 250 / 255, 251 / 255);        // #F9FAFB
+const GRAY_300 = rgb(209 / 255, 213 / 255, 219 / 255);       // #D1D5DB
+const GRAY_500 = rgb(107 / 255, 114 / 255, 128 / 255);       // #6B7280
+const GRAY_900 = rgb(17 / 255, 24 / 255, 39 / 255);          // #111827
+const GREEN_600 = rgb(22 / 255, 163 / 255, 74 / 255);        // #16A34A
+const WHITE = rgb(1, 1, 1);
 
 /**
- * Generate a Premium PDF Invoice using Puppeteer.
- * Renders a high-quality HTML template to PDF.
+ * Generate a Premium PDF Invoice using pdf-lib.
+ * Works on serverless environments like Vercel.
  */
 export async function generateInvoicePDF(order) {
-  let browser = null;
   try {
-    // Launch headless browser
-    browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // Create PDF document
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
+
+    // Embed standard fonts
+    const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+    const { width, height } = page.getSize();
+    const margin = 40;
+
+    // Generate QR Code
+    const trackingUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/track-order?order=${order.orderNumber}&email=${encodeURIComponent(order.customerEmail)}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(trackingUrl, { width: 100, margin: 1 });
+    const qrCodeBytes = Buffer.from(qrCodeDataUrl.split(',')[1], 'base64');
+    const qrImage = await pdfDoc.embedPng(qrCodeBytes);
+
+    // Format helpers
+    const formatPrice = (amount) => 'Rs. ' + (amount || 0).toLocaleString('en-IN');
+    const date = new Date(order.createdAt || Date.now()).toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+    const paymentMethod = (order.paymentMethod || 'COD').toUpperCase();
+
+    // ============ HEADER ============
+    // Dark green background
+    page.drawRectangle({
+      x: 0,
+      y: height - 90,
+      width: width,
+      height: 90,
+      color: BRAND_GREEN,
     });
 
-    const page = await browser.newPage();
+    // Gold accent line
+    page.drawRectangle({
+      x: 0,
+      y: height - 93,
+      width: width,
+      height: 3,
+      color: BRAND_GOLD,
+    });
 
-    // Generate HTML content
-    const html = getInvoiceHTML(order);
+    // Logo text
+    const brandText = 'Essence Clean';
+    const brandSize = 24;
+    page.drawText(brandText, {
+      x: margin,
+      y: height - 45,
+      size: brandSize,
+      font: helveticaBold,
+      color: WHITE,
+    });
 
-    // Set content and wait for fonts/images
-    await page.setContent(html, { waitUntil: 'networkidle0' });
+    // Slogan with justified spacing
+    const sloganText = 'PREMIUM NATURAL CARE';
+    const sloganSize = 8;
+    const brandWidth = helveticaBold.widthOfTextAtSize(brandText, brandSize);
+    const sloganWidth = helveticaBold.widthOfTextAtSize(sloganText, sloganSize);
+    const charSpacing = (brandWidth - sloganWidth) / (sloganText.length - 1);
 
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: {
-        top: '0px',
-        bottom: '0px',
-        left: '0px',
-        right: '0px'
+    page.pushOperators(PDFOperator.of('Tc', [PDFNumber.of(charSpacing)]));
+    page.drawText(sloganText, {
+      x: margin,
+      y: height - 60,
+      size: sloganSize,
+      font: helveticaBold,
+      color: BRAND_GOLD,
+    });
+    page.pushOperators(PDFOperator.of('Tc', [PDFNumber.of(0)]));
+
+    // TAX INVOICE text (right side)
+    page.drawText('TAX INVOICE', {
+      x: width - margin - 100,
+      y: height - 45,
+      size: 18,
+      font: helveticaBold,
+      color: WHITE,
+    });
+
+    page.drawText(`#${order.orderNumber}`, {
+      x: width - margin - 100,
+      y: height - 62,
+      size: 10,
+      font: helvetica,
+      color: rgb(156 / 255, 163 / 255, 175 / 255),
+    });
+
+    // ============ BILLED TO & INVOICE DETAILS ============
+    let yPos = height - 130;
+
+    // BILLED TO label
+    page.drawText('BILLED TO', {
+      x: margin,
+      y: yPos,
+      size: 9,
+      font: helveticaBold,
+      color: GRAY_500,
+    });
+
+    // Gold left border for billing info
+    page.drawRectangle({
+      x: margin,
+      y: yPos - 75,
+      width: 3,
+      height: 70,
+      color: BRAND_GOLD,
+    });
+
+    // Customer info
+    page.drawText(order.customerName, {
+      x: margin + 12,
+      y: yPos - 20,
+      size: 14,
+      font: helveticaBold,
+      color: GRAY_900,
+    });
+
+    page.drawText(order.address, {
+      x: margin + 12,
+      y: yPos - 38,
+      size: 10,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    page.drawText(`${order.city}, ${order.state} - ${order.pincode}`, {
+      x: margin + 12,
+      y: yPos - 52,
+      size: 10,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    page.drawText(`Phone: ${order.customerPhone}`, {
+      x: margin + 12,
+      y: yPos - 66,
+      size: 10,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    // INVOICE DETAILS box (right side)
+    const detailsBoxX = width - margin - 180;
+    const detailsBoxWidth = 180;
+
+    page.drawText('INVOICE DETAILS', {
+      x: detailsBoxX + 60,
+      y: yPos,
+      size: 9,
+      font: helveticaBold,
+      color: GRAY_500,
+    });
+
+    // Details box background
+    page.drawRectangle({
+      x: detailsBoxX,
+      y: yPos - 90,
+      width: detailsBoxWidth,
+      height: 75,
+      color: GRAY_50,
+    });
+
+    // Details content
+    const detailsStartY = yPos - 28;
+
+    // Date Issued
+    page.drawText('Date Issued', {
+      x: detailsBoxX + 12,
+      y: detailsStartY,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+    page.drawText(date, {
+      x: detailsBoxX + detailsBoxWidth - 12 - helveticaBold.widthOfTextAtSize(date, 10),
+      y: detailsStartY,
+      size: 10,
+      font: helveticaBold,
+      color: GRAY_900,
+    });
+
+    // Payment
+    page.drawText('Payment', {
+      x: detailsBoxX + 12,
+      y: detailsStartY - 22,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+    page.drawText(paymentMethod, {
+      x: detailsBoxX + detailsBoxWidth - 12 - helveticaBold.widthOfTextAtSize(paymentMethod, 10),
+      y: detailsStartY - 22,
+      size: 10,
+      font: helveticaBold,
+      color: GRAY_900,
+    });
+
+    // Tracking ID
+    const trackingId = order.trackingId || 'Pending';
+    page.drawText('Tracking ID', {
+      x: detailsBoxX + 12,
+      y: detailsStartY - 44,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+    page.drawText(trackingId, {
+      x: detailsBoxX + detailsBoxWidth - 12 - helveticaBold.widthOfTextAtSize(trackingId, 9),
+      y: detailsStartY - 44,
+      size: 9,
+      font: helveticaBold,
+      color: BRAND_GOLD,
+    });
+
+    // ============ ITEMS TABLE ============
+    yPos = height - 250;
+
+    const tableWidth = width - (margin * 2);
+    const rowHeight = 30;
+
+    // Table header background
+    page.drawRectangle({
+      x: margin,
+      y: yPos - rowHeight,
+      width: tableWidth,
+      height: rowHeight,
+      color: BRAND_GREEN,
+    });
+
+    // Column positions
+    const col1X = margin + 10;
+    const col2X = margin + 280;
+    const col3X = margin + 370;
+    const col4X = margin + 450;
+
+    // Header text
+    page.drawText('ITEM DESCRIPTION', {
+      x: col1X,
+      y: yPos - 20,
+      size: 8,
+      font: helveticaBold,
+      color: WHITE,
+    });
+    page.drawText('UNIT PRICE', {
+      x: col2X,
+      y: yPos - 20,
+      size: 8,
+      font: helveticaBold,
+      color: WHITE,
+    });
+    page.drawText('QTY', {
+      x: col3X + 10,
+      y: yPos - 20,
+      size: 8,
+      font: helveticaBold,
+      color: WHITE,
+    });
+    page.drawText('TOTAL', {
+      x: col4X + 20,
+      y: yPos - 20,
+      size: 8,
+      font: helveticaBold,
+      color: WHITE,
+    });
+
+    yPos -= rowHeight;
+
+    // Table rows
+    order.items.forEach((item, index) => {
+      const rowY = yPos - (index + 1) * rowHeight;
+
+      // Alternating row background
+      if (index % 2 === 0) {
+        page.drawRectangle({
+          x: margin,
+          y: rowY,
+          width: tableWidth,
+          height: rowHeight,
+          color: GRAY_50,
+        });
       }
+
+      // Row bottom border
+      page.drawRectangle({
+        x: margin,
+        y: rowY,
+        width: tableWidth,
+        height: 1,
+        color: rgb(229 / 255, 231 / 255, 235 / 255),
+      });
+
+      // Item name
+      page.drawText(item.name, {
+        x: col1X,
+        y: rowY + 10,
+        size: 10,
+        font: helvetica,
+        color: GRAY_900,
+      });
+
+      // Unit price
+      const priceText = formatPrice(item.price);
+      page.drawText(priceText, {
+        x: col2X,
+        y: rowY + 10,
+        size: 10,
+        font: helvetica,
+        color: GRAY_500,
+      });
+
+      // Quantity
+      page.drawText(item.quantity.toString(), {
+        x: col3X + 15,
+        y: rowY + 10,
+        size: 10,
+        font: helvetica,
+        color: GRAY_500,
+      });
+
+      // Total
+      const totalText = formatPrice(item.price * item.quantity);
+      page.drawText(totalText, {
+        x: col4X + 10,
+        y: rowY + 10,
+        size: 10,
+        font: helveticaBold,
+        color: GRAY_900,
+      });
     });
 
-    return pdfBuffer;
+    // Table border
+    const tableEndY = yPos - (order.items.length * rowHeight);
+    page.drawRectangle({
+      x: margin,
+      y: tableEndY,
+      width: tableWidth,
+      height: yPos - tableEndY + rowHeight,
+      borderColor: rgb(229 / 255, 231 / 255, 235 / 255),
+      borderWidth: 1,
+    });
+
+    // ============ TOTALS SECTION ============
+    yPos = tableEndY - 30;
+    const totalsX = width - margin - 180;
+
+    // Subtotal
+    page.drawText('Subtotal', {
+      x: totalsX,
+      y: yPos,
+      size: 10,
+      font: helvetica,
+      color: GRAY_500,
+    });
+    const subtotalText = formatPrice(order.subtotal);
+    page.drawText(subtotalText, {
+      x: width - margin - helvetica.widthOfTextAtSize(subtotalText, 10),
+      y: yPos,
+      size: 10,
+      font: helvetica,
+      color: GRAY_900,
+    });
+
+    yPos -= 22;
+
+    // Shipping
+    page.drawText('Shipping', {
+      x: totalsX,
+      y: yPos,
+      size: 10,
+      font: helvetica,
+      color: GRAY_500,
+    });
+    const shippingText = order.shipping === 0 ? 'FREE' : formatPrice(order.shipping);
+    const shippingColor = order.shipping === 0 ? GREEN_600 : GRAY_900;
+    page.drawText(shippingText, {
+      x: width - margin - helveticaBold.widthOfTextAtSize(shippingText, 10),
+      y: yPos,
+      size: 10,
+      font: helveticaBold,
+      color: shippingColor,
+    });
+
+    yPos -= 30;
+
+    // Total line
+    page.drawRectangle({
+      x: totalsX,
+      y: yPos + 18,
+      width: 180,
+      height: 2,
+      color: BRAND_GREEN,
+    });
+
+    // Total Due
+    page.drawText('Total Due', {
+      x: totalsX,
+      y: yPos,
+      size: 12,
+      font: helveticaBold,
+      color: BRAND_GREEN,
+    });
+    const totalText = formatPrice(order.total);
+    page.drawText(totalText, {
+      x: width - margin - helveticaBold.widthOfTextAtSize(totalText, 14),
+      y: yPos - 2,
+      size: 14,
+      font: helveticaBold,
+      color: BRAND_GREEN,
+    });
+
+    // ============ TRACK YOUR ORDER SECTION ============
+    yPos -= 70;
+    const trackBoxHeight = 90;
+
+    // Gray background box
+    page.drawRectangle({
+      x: margin,
+      y: yPos - trackBoxHeight,
+      width: tableWidth,
+      height: trackBoxHeight,
+      color: GRAY_50,
+      borderColor: GRAY_300,
+      borderWidth: 1,
+    });
+
+    // Track Your Order text
+    page.drawText('Track Your Order', {
+      x: margin + 20,
+      y: yPos - 25,
+      size: 14,
+      font: helveticaBold,
+      color: BRAND_GREEN,
+    });
+
+    page.drawText('Scan the QR code to view live shipping updates or click', {
+      x: margin + 20,
+      y: yPos - 45,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    page.drawText('the tracking link in your email.', {
+      x: margin + 20,
+      y: yPos - 57,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    page.drawText(`Order ID: ${order.orderNumber}`, {
+      x: margin + 20,
+      y: yPos - 75,
+      size: 8,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    // QR Code
+    const qrSize = 60;
+    const qrX = width - margin - qrSize - 25;
+    const qrY = yPos - trackBoxHeight + 15;
+
+    // White background for QR
+    page.drawRectangle({
+      x: qrX - 5,
+      y: qrY - 5,
+      width: qrSize + 10,
+      height: qrSize + 10,
+      color: WHITE,
+      borderColor: GRAY_300,
+      borderWidth: 1,
+    });
+
+    page.drawImage(qrImage, {
+      x: qrX,
+      y: qrY,
+      width: qrSize,
+      height: qrSize,
+    });
+
+    // ============ FOOTER ============
+    const footerY = 50;
+
+    // Top border line
+    page.drawRectangle({
+      x: 0,
+      y: footerY + 20,
+      width: width,
+      height: 1,
+      color: rgb(229 / 255, 231 / 255, 235 / 255),
+    });
+
+    // Footer text
+    const footerText1 = 'Thank you for choosing Essence Clean. Contact us at ';
+    const emailText = 'support@essenceclean.com';
+
+    page.drawText(footerText1, {
+      x: (width - helvetica.widthOfTextAtSize(footerText1 + emailText, 9)) / 2,
+      y: footerY,
+      size: 9,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    page.drawText(emailText, {
+      x: (width - helvetica.widthOfTextAtSize(footerText1 + emailText, 9)) / 2 + helvetica.widthOfTextAtSize(footerText1, 9),
+      y: footerY,
+      size: 9,
+      font: helveticaBold,
+      color: BRAND_GREEN,
+    });
+
+    const disclaimerText = 'This is a computer-generated invoice. No signature required.';
+    page.drawText(disclaimerText, {
+      x: (width - helvetica.widthOfTextAtSize(disclaimerText, 7)) / 2,
+      y: footerY - 15,
+      size: 7,
+      font: helvetica,
+      color: GRAY_500,
+    });
+
+    // Save PDF
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
 
   } catch (error) {
-    console.error('Puppeteer Invoice Generation Error:', error);
+    console.error('PDF-lib Invoice Generation Error:', error);
     throw error;
-  } finally {
-    if (browser) await browser.close();
   }
-}
-
-/**
- * Generates the HTML string for the invoice.
- */
-function getInvoiceHTML(order) {
-  const trackingUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/track-order?order=${order.orderNumber}&email=${encodeURIComponent(order.customerEmail)}`;
-  const date = new Date(order.createdAt || Date.now()).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-  const paymentMethod = (order.paymentMethod || 'COD').toUpperCase();
-
-  // Format currency
-  const formatPrice = (amount) => '₹' + (amount || 0).toLocaleString('en-IN');
-
-  // Render items rows
-  const itemsRows = order.items.map((item, index) => `
-    <tr class="${index % 2 === 0 ? 'bg-gray-50' : ''}">
-      <td class="py-3 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 max-w-xs truncate">
-        ${item.name}
-      </td>
-      <td class="px-3 py-3 text-sm text-right text-gray-500">
-        ${formatPrice(item.price)}
-      </td>
-      <td class="px-3 py-3 text-sm text-center text-gray-500">
-        ${item.quantity}
-      </td>
-      <td class="px-3 py-3 text-sm text-right text-gray-900 font-bold pr-6">
-        ${formatPrice(item.price * item.quantity)}
-      </td>
-    </tr>
-  `).join('');
-
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Invoice #${order.orderNumber}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @page { margin: 0; }
-    body { 
-      font-family: 'Inter', sans-serif; 
-      -webkit-print-color-adjust: exact; 
-      print-color-adjust: exact;
-    }
-    .font-serif { font-family: 'Playfair Display', serif; }
-    .bg-brand { background-color: #0A3D2E; }
-    .text-brand { color: #0A3D2E; }
-    .bg-gold { background-color: #C5A059; }
-    .text-gold { color: #C5A059; }
-    .page-container {
-      width: 210mm;
-      min-height: 297mm;
-      padding: 0;
-      margin: 0 auto;
-      background: white;
-      position: relative;
-    }
-    .content-wrap {
-      padding: 40px;
-    }
-    /* Ensure content fits on one page if possible */
-    .compact-table td { padding-top: 8px; padding-bottom: 8px; }
-  </style>
-</head>
-<body class="bg-white">
-  <div class="page-container">
-    <!-- Header -->
-    <div class="bg-brand text-white h-32 relative overflow-hidden">
-      <div class="absolute bottom-0 left-0 w-full h-1 bg-gold"></div>
-      <div class="h-full flex items-center justify-between px-10">
-        <div>
-          <h1 class="font-serif text-3xl font-bold tracking-wide">Essence Clean</h1>
-          <p class="text-gold text-xs font-bold tracking-[0.2em] mt-1 uppercase">Premium Natural Care</p>
-        </div>
-        <div class="text-right">
-          <h2 class="text-2xl font-bold tracking-tight">TAX INVOICE</h2>
-          <p class="text-gray-300 text-sm mt-1">#${order.orderNumber}</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="content-wrap">
-      <!-- Info Grid -->
-      <div class="flex justify-between mb-8 gap-8">
-        <!-- Billed To -->
-        <div class="flex-1">
-          <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Billed To</h3>
-          <div class="text-gray-900 border-l-4 border-gold pl-4">
-            <p class="font-bold text-lg">${order.customerName}</p>
-            <p class="text-sm text-gray-600 mt-1 whitespace-pre-line leading-relaxed">${order.address}</p>
-            <p class="text-sm text-gray-600 mt-1">${order.city}, ${order.state} - ${order.pincode}</p>
-            <p class="text-sm text-gray-600 mt-1">Phone: ${order.customerPhone}</p>
-          </div>
-        </div>
-
-        <!-- Invoice Details -->
-        <div class="w-64">
-          <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 text-right">Invoice Details</h3>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <div class="flex justify-between mb-2">
-              <span class="text-xs text-gray-500">Date Issued</span>
-              <span class="text-sm font-bold text-gray-900">${date}</span>
-            </div>
-            <div class="flex justify-between mb-2">
-              <span class="text-xs text-gray-500">Payment</span>
-              <span class="text-sm font-bold text-gray-900">${paymentMethod}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-xs text-gray-500">Tracking ID</span>
-              <span class="text-sm font-bold text-gold">${order.trackingId || 'Pending'}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Items Table -->
-      <div class="mb-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg border border-gray-100">
-        <table class="min-w-full divide-y divide-gray-300 compact-table">
-          <thead class="bg-brand">
-            <tr>
-              <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-bold uppercase tracking-wide text-white sm:pl-6">Item Description</th>
-              <th scope="col" class="px-3 py-3 text-right text-xs font-bold uppercase tracking-wide text-white">Unit Price</th>
-              <th scope="col" class="px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-white">Qty</th>
-              <th scope="col" class="px-3 py-3 text-right text-xs font-bold uppercase tracking-wide text-white pr-6">Total</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            ${itemsRows}
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Totals -->
-      <div class="flex justify-end mb-10">
-        <div class="w-80">
-          <div class="flex justify-between py-2 border-b border-gray-100">
-            <span class="text-gray-500 text-sm">Subtotal</span>
-            <span class="text-gray-900 font-medium">${formatPrice(order.subtotal)}</span>
-          </div>
-          <div class="flex justify-between py-2 border-b border-gray-100">
-            <span class="text-gray-500 text-sm">Shipping</span>
-            <span class="text-gray-900 font-medium ${order.shipping === 0 ? 'text-green-600' : ''}">
-              ${order.shipping === 0 ? 'FREE' : formatPrice(order.shipping)}
-            </span>
-          </div>
-          <div class="flex justify-between py-3 border-b-2 border-brand mt-1">
-            <span class="text-brand font-bold text-lg">Total Due</span>
-            <span class="text-brand font-bold text-xl">${formatPrice(order.total)}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tracking Section (Sticks to bottom of content, or flexible) -->
-      <div class="bg-gray-50 rounded-xl border border-gray-200 p-6 flex items-center justify-between">
-        <div>
-          <h4 class="font-bold text-brand text-lg">Track Your Order</h4>
-          <p class="text-sm text-gray-600 mt-1 max-w-sm">
-            Scan the QR code to view live shipping updates or click the tracking link in your email.
-          </p>
-          <div class="mt-3 text-xs text-gray-400">Order ID: ${order.orderNumber}</div>
-        </div>
-        <div class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(trackingUrl)}" 
-               alt="QR" class="w-20 h-20 object-contain">
-        </div>
-      </div>
-    </div>
-
-    <!-- Footer Page Bottom -->
-    <div class="absolute bottom-0 w-full border-t border-gray-100 py-6 text-center">
-      <p class="text-gray-500 text-xs text-center">
-        Thank you for choosing Essence Clean. Contact us at <strong class="text-brand">support@essenceclean.com</strong>
-      </p>
-      <p class="text-gray-400 text-[10px] mt-1">
-        This is a computer-generated invoice. No signature required.
-      </p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
 }
