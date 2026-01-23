@@ -197,7 +197,7 @@ function generateEmailTemplate(order) {
                                 📦 Track Your Order
                             </a>
                             
-                            <p style="margin-top: 25px; margin-bottom: 10px; color: #6b7280; font-size: 14px;">或 Scan to Track:</p>
+                            <p style="margin-top: 25px; margin-bottom: 10px; color: #6b7280; font-size: 14px;">Scan to Track</p>
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(trackingUrl)}" alt="Track Order QR Code" width="120" height="120" style="border: 2px solid #e5e7eb; padding: 5px; border-radius: 8px;">
                         </td>
                     </tr>
