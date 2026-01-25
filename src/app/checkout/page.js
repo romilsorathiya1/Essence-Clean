@@ -128,6 +128,26 @@ export default function Checkout() {
     const shipping = cartTotal >= 999 ? 0 : 99;
     const total = cartTotal + shipping;
 
+    const downloadInvoice = async () => {
+        try {
+            const response = await fetch(`/api/orders/${orderNumber}/invoice`);
+            if (!response.ok) throw new Error('Failed to download invoice');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `invoice-${orderNumber}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Error downloading invoice:', error);
+            alert('Failed to download invoice. Please try again.');
+        }
+    };
+
     // Order Confirmation View
     if (orderPlaced) {
         return (
@@ -146,12 +166,14 @@ export default function Checkout() {
                             Our team will process your order and you'll receive shipping updates soon.
                         </p>
                         <div className={styles.confirmationActions}>
-                            <Link href={`/track-order?order=${orderNumber}&email=${encodeURIComponent(formData.customerEmail)}`} className={styles.trackBtn}>
-                                Track Your Order
-                            </Link>
-                            <Link href="/" className={styles.homeBtn}>
-                                Return to Home
-                            </Link>
+                            <div className={styles.actionButtons}>
+                                <Link href={`/track-order?order=${orderNumber}&email=${encodeURIComponent(formData.customerEmail)}`} className={styles.trackBtn}>
+                                    Track Your Order
+                                </Link>
+                                <button onClick={downloadInvoice} className={styles.homeBtn}>
+                                    Download Invoice
+                                </button>
+                            </div>
                             <Link href="/products" className={styles.shopBtn}>
                                 Continue Shopping
                             </Link>

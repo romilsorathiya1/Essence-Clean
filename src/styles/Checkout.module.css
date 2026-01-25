@@ -412,9 +412,37 @@
 
 .confirmationActions {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
+    align-items: center;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.downloadBtn {
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    text-decoration: none;
+    background: var(--accent-gold);
+    color: var(--primary-dark);
+    border: 2px solid var(--accent-gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+}
+
+.downloadBtn:hover {
+    background: #d4af61;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(197, 160, 89, 0.4);
 }
 
 .trackBtn {
@@ -424,15 +452,14 @@
     font-size: 0.95rem;
     transition: var(--transition);
     text-decoration: none;
-    background: linear-gradient(135deg, var(--accent-gold), #d4af61);
+    background: transparent;
     color: var(--primary-dark);
     border: 2px solid var(--accent-gold);
 }
 
 .trackBtn:hover {
-    background: var(--accent-gold);
+    background: rgba(197, 160, 89, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(197, 160, 89, 0.4);
 }
 
 .homeBtn,
