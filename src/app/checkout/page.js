@@ -114,6 +114,8 @@ export default function Checkout() {
                 setOrderNumber(data.data.orderNumber);
                 setOrderPlaced(true);
                 clearCart();
+                // Scroll to top to show order confirmation
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 alert(data.error || 'Failed to place order. Please try again.');
             }
@@ -170,7 +172,7 @@ export default function Checkout() {
                                 <Link href={`/track-order?order=${orderNumber}&email=${encodeURIComponent(formData.customerEmail)}`} className={styles.trackBtn}>
                                     Track Your Order
                                 </Link>
-                                <button onClick={downloadInvoice} className={styles.homeBtn}>
+                                <button onClick={downloadInvoice} className={styles.downloadInvoiceBtn}>
                                     Download Invoice
                                 </button>
                             </div>

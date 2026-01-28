@@ -259,8 +259,8 @@ export default function AdminProducts() {
             {/* Add/Edit Modal */}
             {showModal && (
                 <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
-                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.modalHeader}>
+                    <div className={styles.productModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.productModalHeader}>
                             <h2>{editingProduct ? 'Edit Product' : 'Add New Product'}</h2>
                             <button onClick={() => setShowModal(false)} className={styles.closeBtn}>
                                 <FaXmark />
@@ -268,7 +268,7 @@ export default function AdminProducts() {
                         </div>
 
                         <form onSubmit={handleSubmit}>
-                            <div className={styles.modalBody}>
+                            <div className={styles.productModalBody}>
                                 <div className={styles.modalForm}>
                                     <div className={styles.formGroup}>
                                         <label>Product Name *</label>
@@ -426,7 +426,7 @@ export default function AdminProducts() {
                                 </div>
                             </div>
 
-                            <div className={styles.modalFooter}>
+                            <div className={styles.productModalFooter}>
                                 <button type="button" onClick={() => setShowModal(false)} className={styles.cancelBtn}>
                                     Cancel
                                 </button>

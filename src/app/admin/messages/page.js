@@ -221,67 +221,88 @@ export default function AdminMessages() {
             {/* Message Details Modal */}
             {showModal && selectedMessage && (
                 <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
-                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.modalHeader}>
+                    <div className={styles.messageModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.messageModalHeader}>
                             <h2>Message Details</h2>
                             <button onClick={() => setShowModal(false)} className={styles.closeBtn}>
                                 <FaXmark />
                             </button>
                         </div>
 
-                        <div className={styles.modalBody}>
-                            <div className={`${styles.messageCard} ${!selectedMessage.isRead ? styles.unread : ''}`}>
-                                <div className={styles.messageHeader}>
-                                    <h4>{selectedMessage.name}</h4>
-                                    <span>{formatDate(selectedMessage.createdAt)}</span>
-                                </div>
-
-                                <div className={styles.messageMeta}>
-                                    <span><strong>Email:</strong> {selectedMessage.email}</span>
-                                    {selectedMessage.phone && <span><strong>Phone:</strong> {selectedMessage.phone}</span>}
-                                </div>
-
-                                <div className={styles.messageMeta}>
-                                    <span><strong>Subject:</strong> {selectedMessage.subject || 'General Inquiry'}</span>
-                                </div>
-
-                                <div className={styles.messageBody}>
-                                    {selectedMessage.message}
+                        <div className={styles.messageModalBody}>
+                            {/* Sender Information */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>SENDER INFORMATION</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <label>Name</label>
+                                        <p>{selectedMessage.name}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Email Address</label>
+                                        <p>{selectedMessage.email}</p>
+                                    </div>
+                                    {selectedMessage.phone && (
+                                        <div className={styles.infoItem}>
+                                            <label>Phone Number</label>
+                                            <p>{selectedMessage.phone}</p>
+                                        </div>
+                                    )}
+                                    <div className={styles.infoItem}>
+                                        <label>Received Date</label>
+                                        <p>{formatDate(selectedMessage.createdAt)}</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
-                                <a
-                                    href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || 'Your Inquiry'}`}
-                                    className={styles.saveBtn}
-                                    style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-                                >
-                                    <FaEnvelope />
-                                    Reply via Email
-                                </a>
-                                {!selectedMessage.isReplied && (
-                                    <button
-                                        onClick={() => markAsReplied(selectedMessage.id)}
-                                        className={styles.cancelBtn}
-                                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                                    >
-                                        <FaCheck />
-                                        Mark as Replied
-                                    </button>
-                                )}
+                            {/* Message Content */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>MESSAGE</h3>
+                                <div className={styles.messageContentBox}>
+                                    <div className={styles.messageSubject}>
+                                        <strong>Subject:</strong> {selectedMessage.subject || 'General Inquiry'}
+                                    </div>
+                                    <div className={styles.messageText}>
+                                        {selectedMessage.message}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Status */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>STATUS</h3>
+                                <div className={styles.messageStatusInfo}>
+                                    <div className={styles.infoItem}>
+                                        <label>Read Status</label>
+                                        <span className={`${styles.badge} ${selectedMessage.isRead ? styles.read : styles.unread}`}>
+                                            {selectedMessage.isRead ? 'Read' : 'Unread'}
+                                        </span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Reply Status</label>
+                                        <span className={`${styles.badge} ${selectedMessage.isReplied ? styles.confirmed : styles.pending}`}>
+                                            {selectedMessage.isReplied ? 'Replied' : 'Pending'}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className={styles.modalFooter}>
+                        <div className={styles.messageModalFooter}>
+                            <a
+                                href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject || 'Your Inquiry'}`}
+                                className={styles.replyBtn}
+                                onClick={() => markAsReplied(selectedMessage.id)}
+                            >
+                                <FaEnvelope />
+                                Reply via Email
+                            </a>
                             <button
                                 onClick={() => handleDelete(selectedMessage.id)}
-                                className={styles.cancelBtn}
-                                style={{ color: 'var(--admin-danger)' }}
+                                className={styles.deleteMessageBtn}
                             >
+                                <FaTrash />
                                 Delete Message
-                            </button>
-                            <button onClick={() => setShowModal(false)} className={styles.saveBtn}>
-                                Close
                             </button>
                         </div>
                     </div>

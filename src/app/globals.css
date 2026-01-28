@@ -93,3 +93,32 @@ section {
         padding: 3rem 0;
     }
 }
+
+/* ========================================
+   Global Custom Scrollbar
+   Premium styling for the main website scrollbar
+======================================== */
+/* Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-dark) var(--off-white);
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--off-white);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+    border-radius: 100px;
+    border: 2px solid var(--off-white);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #05261D 0%, #0A3D2E 100%);
+}

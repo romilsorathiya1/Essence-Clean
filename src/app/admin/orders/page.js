@@ -202,77 +202,116 @@ export default function AdminOrders() {
             {/* Order Details Modal */}
             {showModal && selectedOrder && (
                 <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
-                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                        <div className={styles.modalHeader}>
-                            <h2>Order {selectedOrder.orderNumber}</h2>
+                    <div className={styles.orderModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.orderModalHeader}>
+                            <h2>Order Details <span className={styles.orderNumberHighlight}>#{selectedOrder.orderNumber}</span></h2>
                             <button onClick={() => setShowModal(false)} className={styles.closeBtn}>
                                 <FaXmark />
                             </button>
                         </div>
 
-                        <div className={styles.modalBody}>
-                            <div className={styles.orderDetails}>
-                                <div className={styles.orderSection}>
-                                    <h4>Customer Information</h4>
-                                    <p><strong>Name:</strong> {selectedOrder.customerName}</p>
-                                    <p><strong>Email:</strong> {selectedOrder.customerEmail}</p>
-                                    <p><strong>Phone:</strong> {selectedOrder.customerPhone}</p>
+                        <div className={styles.orderModalBody}>
+                            {/* Customer Information */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>CUSTOMER INFORMATION</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <label>Full Name</label>
+                                        <p>{selectedOrder.customerName}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Email Address</label>
+                                        <p>{selectedOrder.customerEmail}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Phone Number</label>
+                                        <p>{selectedOrder.customerPhone}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Shipping Address</label>
+                                        <p>{selectedOrder.address}{selectedOrder.city && `, ${selectedOrder.city}, ${selectedOrder.state} - ${selectedOrder.pincode}`}</p>
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div className={styles.orderSection}>
-                                    <h4>Shipping Address</h4>
-                                    <p>{selectedOrder.address}</p>
-                                    {selectedOrder.city && <p>{selectedOrder.city}, {selectedOrder.state} - {selectedOrder.pincode}</p>}
+                            {/* Order Summary */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>ORDER SUMMARY</h3>
+                                <div className={styles.productList}>
+                                    {selectedOrder.items?.map((item, index) => (
+                                        <div key={index} className={styles.productItem}>
+                                            <div className={styles.productImageWrapper}>
+                                                {item.image && <img src={item.image} alt={item.name} className={styles.productImageModal} />}
+                                            </div>
+                                            <div className={styles.productInfo}>
+                                                <h4>{item.name}</h4>
+                                                <p>Qty: {item.quantity}</p>
+                                            </div>
+                                            <div className={styles.productPrice}>
+                                                ₹{(item.price * item.quantity).toLocaleString()}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
+                            </div>
 
-                                <div className={styles.orderSection}>
-                                    <h4>Order Items</h4>
-                                    <ul className={styles.orderItems}>
-                                        {selectedOrder.items?.map((item, index) => (
-                                            <li key={index}>
-                                                <span>{item.name} × {item.quantity}</span>
-                                                <span>₹{(item.price * item.quantity).toLocaleString()}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                            {/* Payment Info */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>PAYMENT INFO</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <label>Payment Method</label>
+                                        <p>{selectedOrder.paymentMethod?.toUpperCase() || 'COD'}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Total Amount</label>
+                                        <p className={styles.totalAmount}>₹{selectedOrder.total?.toLocaleString()}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Order Date</label>
+                                        <p>{formatDate(selectedOrder.createdAt)}</p>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <label>Current Status</label>
+                                        <span className={`${styles.badge} ${styles[selectedOrder.status]}`}>
+                                            {selectedOrder.status?.toUpperCase()}
+                                        </span>
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div className={styles.orderSection}>
-                                    <h4>Order Summary</h4>
-                                    <p><strong>Subtotal:</strong> ₹{selectedOrder.subtotal?.toLocaleString()}</p>
-                                    <p><strong>Shipping:</strong> ₹{selectedOrder.shipping?.toLocaleString() || 0}</p>
-                                    <p><strong>Total:</strong> ₹{selectedOrder.total?.toLocaleString()}</p>
-                                    <p><strong>Payment Method:</strong> {selectedOrder.paymentMethod?.toUpperCase() || 'COD'}</p>
-                                </div>
-
-                                <div className={styles.orderSection}>
-                                    <h4>Update Status</h4>
+                            {/* Update Status */}
+                            <div className={styles.orderModalSection}>
+                                <h3 className={styles.sectionTitle}>UPDATE STATUS</h3>
+                                <div style={{ maxWidth: '300px' }}>
                                     <CustomSelect
                                         options={statusOptions}
                                         value={selectedOrder.status}
                                         onChange={(value) => handleStatusChange(selectedOrder.id, value)}
                                     />
                                 </div>
-
-                                {selectedOrder.notes && (
-                                    <div className={styles.orderSection}>
-                                        <h4>Order Notes</h4>
-                                        <p>{selectedOrder.notes}</p>
-                                    </div>
-                                )}
                             </div>
+
+                            {selectedOrder.notes && (
+                                <div className={styles.orderModalSection}>
+                                    <h3 className={styles.sectionTitle}>ORDER NOTES</h3>
+                                    <p className={styles.orderNotes}>{selectedOrder.notes}</p>
+                                </div>
+                            )}
                         </div>
 
-                        <div className={styles.modalFooter}>
+                        <div className={styles.orderModalFooter}>
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className={styles.cancelOrderBtn}
+                            >
+                                Cancel
+                            </button>
                             <button
                                 onClick={() => handleDownloadInvoice(selectedOrder.id)}
-                                className={styles.saveBtn}
-                                style={{ marginRight: '1rem', backgroundColor: '#0A3D2E' }}
+                                className={styles.downloadInvoiceBtn}
                             >
                                 Download Invoice
-                            </button>
-                            <button onClick={() => setShowModal(false)} className={styles.cancelBtn}>
-                                Close
                             </button>
                         </div>
                     </div>

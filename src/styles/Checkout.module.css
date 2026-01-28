@@ -462,7 +462,7 @@
     transform: translateY(-2px);
 }
 
-.homeBtn,
+.downloadInvoiceBtn,
 .shopBtn {
     padding: 0.9rem 2rem;
     border-radius: 50px;
@@ -472,14 +472,15 @@
     text-decoration: none;
 }
 
-.homeBtn {
+.downloadInvoiceBtn {
     background: transparent;
     color: var(--primary-dark);
     border: 2px solid var(--primary-dark);
 }
 
-.homeBtn:hover {
+.downloadInvoiceBtn:hover {
     background: rgba(10, 61, 46, 0.05);
+    transform: translateY(-2px);
 }
 
 .shopBtn {
