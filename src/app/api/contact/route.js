@@ -33,6 +33,22 @@ export async function GET(request) {
             if (status === 'replied') query.isReplied = true;
         }
 
+        const startDate = searchParams.get('startDate');
+        const endDate = searchParams.get('endDate');
+
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) {
+                query.createdAt.$gte = new Date(startDate);
+            }
+            if (endDate) {
+                // Set end date to end of day
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                query.createdAt.$lte = end;
+            }
+        }
+
         // Import find dynamically if not already imported, or use existing generic find
         // Note: ensuring 'find' is imported from db.js
         const contacts = await find('contacts', query);

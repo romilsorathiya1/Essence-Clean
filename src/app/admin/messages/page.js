@@ -12,12 +12,16 @@ export default function AdminMessages() {
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const fetchMessages = async () => {
         try {
             const queryParams = new URLSearchParams();
             if (searchQuery) queryParams.append('search', searchQuery);
             if (statusFilter !== 'all') queryParams.append('status', statusFilter);
+            if (startDate) queryParams.append('startDate', startDate);
+            if (endDate) queryParams.append('endDate', endDate);
 
             const response = await fetch(`/api/contact?${queryParams.toString()}`);
             const data = await response.json();
@@ -34,7 +38,7 @@ export default function AdminMessages() {
 
     useEffect(() => {
         fetchMessages();
-    }, [searchQuery, statusFilter]);
+    }, [searchQuery, statusFilter, startDate, endDate]);
 
     const openMessageModal = async (message) => {
         setSelectedMessage(message);
@@ -125,31 +129,43 @@ export default function AdminMessages() {
                 <p>Contact form submissions from your website {unreadCount > 0 && `(${unreadCount} unread)`}</p>
             </div>
 
-            <div className={styles.filters} style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className={styles.filters}>
                 <input
                     type="text"
                     placeholder="Search by Name..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{
-                        padding: '0.6rem',
-                        borderRadius: '0.5rem',
-                        border: '1px solid #e5e7eb',
-                        width: '300px'
-                    }}
+                    className={styles.searchInput}
                 />
 
-                <CustomSelect
-                    options={[
-                        { value: 'all', label: 'All Messages' },
-                        { value: 'unread', label: 'Unread' },
-                        { value: 'read', label: 'Read' },
-                        { value: 'replied', label: 'Replied' }
-                    ]}
-                    value={statusFilter}
-                    onChange={(value) => setStatusFilter(value)}
-                    style={{ width: '200px' }}
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className={styles.dateInput}
+                    placeholder="Start Date"
                 />
+
+                <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className={styles.dateInput}
+                    placeholder="End Date"
+                />
+
+                <div className={styles.filterSelect}>
+                    <CustomSelect
+                        options={[
+                            { value: 'all', label: 'All Messages' },
+                            { value: 'unread', label: 'Unread' },
+                            { value: 'read', label: 'Read' },
+                            { value: 'replied', label: 'Replied' }
+                        ]}
+                        value={statusFilter}
+                        onChange={(value) => setStatusFilter(value)}
+                    />
+                </div>
             </div>
 
             <div className={styles.tableCard}>
@@ -158,57 +174,59 @@ export default function AdminMessages() {
                 </div>
 
                 {messages.length > 0 ? (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {messages.map((message) => (
-                                <tr key={message.id} style={{ background: !message.isRead ? 'rgba(239, 68, 68, 0.05)' : 'transparent' }}>
-                                    <td>
-                                        <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }}>
-                                            {message.isReplied ? (
-                                                <span className={`${styles.badge} ${styles.confirmed}`}>Replied</span>
-                                            ) : message.isRead ? (
-                                                <span className={`${styles.badge} ${styles.read}`}>Read</span>
-                                            ) : (
-                                                <span className={`${styles.badge} ${styles.unread}`}>Unread</span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td><strong>{message.name}</strong></td>
-                                    <td>{message.email}</td>
-                                    <td>{message.subject || 'General Inquiry'}</td>
-                                    <td>{formatDate(message.createdAt)}</td>
-                                    <td>
-                                        <div className={styles.actions}>
-                                            <button
-                                                onClick={() => openMessageModal(message)}
-                                                className={`${styles.actionBtn} ${styles.view}`}
-                                                title="View"
-                                            >
-                                                <FaEye />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(message.id)}
-                                                className={`${styles.actionBtn} ${styles.delete}`}
-                                                title="Delete"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        </div>
-                                    </td>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {messages.map((message) => (
+                                    <tr key={message.id} style={{ background: !message.isRead ? 'rgba(239, 68, 68, 0.05)' : 'transparent' }}>
+                                        <td>
+                                            <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }}>
+                                                {message.isReplied ? (
+                                                    <span className={`${styles.badge} ${styles.confirmed}`}>Replied</span>
+                                                ) : message.isRead ? (
+                                                    <span className={`${styles.badge} ${styles.read}`}>Read</span>
+                                                ) : (
+                                                    <span className={`${styles.badge} ${styles.unread}`}>Unread</span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td><strong>{message.name}</strong></td>
+                                        <td>{message.email}</td>
+                                        <td>{message.subject || 'General Inquiry'}</td>
+                                        <td>{formatDate(message.createdAt)}</td>
+                                        <td>
+                                            <div className={styles.actions}>
+                                                <button
+                                                    onClick={() => openMessageModal(message)}
+                                                    className={`${styles.actionBtn} ${styles.view}`}
+                                                    title="View"
+                                                >
+                                                    <FaEye />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(message.id)}
+                                                    className={`${styles.actionBtn} ${styles.delete}`}
+                                                    title="Delete"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <div className={styles.emptyState}>
                         <FaEnvelope />

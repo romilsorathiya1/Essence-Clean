@@ -22,8 +22,7 @@ export default function AdminProducts() {
         scent: '',
         badge: '',
         stock: '',
-        features: '',
-        isActive: true
+        features: ''
     });
 
     const fetchProducts = async () => {
@@ -67,8 +66,7 @@ export default function AdminProducts() {
             scent: '',
             badge: '',
             stock: '',
-            features: '',
-            isActive: true
+            features: ''
         });
         setShowModal(true);
     };
@@ -87,8 +85,7 @@ export default function AdminProducts() {
             scent: product.scent || '',
             badge: product.badge || '',
             stock: product.stock?.toString() || '',
-            features: product.features?.join('\n') || '',
-            isActive: product.isActive !== false
+            features: product.features?.join('\n') || ''
         });
         setShowModal(true);
     };
@@ -180,73 +177,69 @@ export default function AdminProducts() {
                 </div>
 
                 {products.length > 0 ? (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Stock</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map((product) => (
-                                <tr key={product.id}>
-                                    <td>
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className={styles.productImage}
-                                        />
-                                    </td>
-                                    <td>
-                                        <strong>{product.name}</strong>
-                                        {product.badge && (
-                                            <span className={`${styles.badge} ${styles.active}`} style={{ marginLeft: '0.5rem' }}>
-                                                {product.badge}
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td>
-                                        ₹{product.price?.toLocaleString()}
-                                        {product.originalPrice && (
-                                            <del style={{ color: '#999', marginLeft: '0.5rem', fontSize: '0.875rem' }}>
-                                                ₹{product.originalPrice?.toLocaleString()}
-                                            </del>
-                                        )}
-                                    </td>
-                                    <td style={{ textTransform: 'capitalize' }}>{product.category}</td>
-                                    <td>{product.stock}</td>
-                                    <td>
-                                        <span className={`${styles.badge} ${product.isActive ? styles.active : styles.inactive}`}>
-                                            {product.isActive ? 'Active' : 'Inactive'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div className={styles.actions}>
-                                            <button
-                                                onClick={() => openEditModal(product)}
-                                                className={`${styles.actionBtn} ${styles.edit}`}
-                                                title="Edit"
-                                            >
-                                                <FaPen />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(product.id)}
-                                                className={`${styles.actionBtn} ${styles.delete}`}
-                                                title="Delete"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        </div>
-                                    </td>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {products.map((product) => (
+                                    <tr key={product.id}>
+                                        <td>
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className={styles.productImage}
+                                            />
+                                        </td>
+                                        <td>
+                                            <strong>{product.name}</strong>
+                                            {product.badge && (
+                                                <span className={`${styles.badge} ${styles.active}`} style={{ marginLeft: '0.5rem' }}>
+                                                    {product.badge}
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            ₹{product.price?.toLocaleString()}
+                                            {product.originalPrice && (
+                                                <del style={{ color: '#999', marginLeft: '0.5rem', fontSize: '0.875rem' }}>
+                                                    ₹{product.originalPrice?.toLocaleString()}
+                                                </del>
+                                            )}
+                                        </td>
+                                        <td style={{ textTransform: 'capitalize' }}>{product.category}</td>
+                                        <td>{product.stock}</td>
+                                        <td>
+                                            <div className={styles.actions}>
+                                                <button
+                                                    onClick={() => openEditModal(product)}
+                                                    className={`${styles.actionBtn} ${styles.edit}`}
+                                                    title="Edit"
+                                                >
+                                                    <FaPen />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(product.id)}
+                                                    className={`${styles.actionBtn} ${styles.delete}`}
+                                                    title="Delete"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <div className={styles.emptyState}>
                         <FaBox />
@@ -412,17 +405,6 @@ export default function AdminProducts() {
                                         />
                                     </div>
 
-                                    <div className={styles.formGroup}>
-                                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                            <input
-                                                type="checkbox"
-                                                name="isActive"
-                                                checked={formData.isActive}
-                                                onChange={handleChange}
-                                            />
-                                            Product is Active
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
 

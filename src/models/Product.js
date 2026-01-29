@@ -46,6 +46,7 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
     category: {
         type: String,
         enum: ['bundle', 'single'],
@@ -59,10 +60,6 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    isActive: {
-        type: Boolean,
-        default: true
-    }
 }, {
     timestamps: true
 });

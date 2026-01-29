@@ -151,7 +151,7 @@ export async function getStats() {
         deliveredOrders,
         recentOrders
     ] = await Promise.all([
-        Product.countDocuments({ isActive: true }),
+        Product.countDocuments({}),
         Order.countDocuments({}),
         Order.countDocuments({ status: 'pending' }),
         Contact.countDocuments({ isRead: false }),

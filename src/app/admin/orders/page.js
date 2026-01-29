@@ -12,6 +12,8 @@ export default function AdminOrders() {
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const statusOptions = [
         { value: 'pending', label: 'Pending' },
@@ -32,6 +34,8 @@ export default function AdminOrders() {
             const queryParams = new URLSearchParams();
             if (searchQuery) queryParams.append('search', searchQuery);
             if (statusFilter !== 'all') queryParams.append('status', statusFilter);
+            if (startDate) queryParams.append('startDate', startDate);
+            if (endDate) queryParams.append('endDate', endDate);
 
             const response = await fetch(`/api/orders?${queryParams.toString()}`);
             const data = await response.json();
@@ -48,7 +52,7 @@ export default function AdminOrders() {
 
     useEffect(() => {
         fetchOrders();
-    }, [searchQuery, statusFilter]);
+    }, [searchQuery, statusFilter, startDate, endDate]);
 
     const openOrderModal = (order) => {
         setSelectedOrder(order);
@@ -108,26 +112,38 @@ export default function AdminOrders() {
                 <p>Manage customer orders and update their status</p>
             </div>
 
-            <div className={styles.filters} style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div className={styles.filters}>
                 <input
                     type="text"
                     placeholder="Search by Order ID..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{
-                        padding: '0.6rem',
-                        borderRadius: '0.5rem',
-                        border: '1px solid #e5e7eb',
-                        width: '300px'
-                    }}
+                    className={styles.searchInput}
                 />
 
-                <CustomSelect
-                    options={filterOptions}
-                    value={statusFilter}
-                    onChange={(value) => setStatusFilter(value)}
-                    style={{ width: '200px' }}
+                <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className={styles.dateInput}
+                    placeholder="Start Date"
                 />
+
+                <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className={styles.dateInput}
+                    placeholder="End Date"
+                />
+
+                <div className={styles.filterSelect}>
+                    <CustomSelect
+                        options={filterOptions}
+                        value={statusFilter}
+                        onChange={(value) => setStatusFilter(value)}
+                    />
+                </div>
             </div>
 
             <div className={styles.tableCard}>
@@ -136,60 +152,62 @@ export default function AdminOrders() {
                 </div>
 
                 {orders.length > 0 ? (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Items</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Payment</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map((order) => (
-                                <tr key={order.id}>
-                                    <td><strong>{order.orderNumber}</strong></td>
-                                    <td>
-                                        {order.customerName}
-                                        <br />
-                                        <small style={{ color: '#666' }}>{order.customerEmail}</small>
-                                    </td>
-                                    <td>{order.items?.length || 0} items</td>
-                                    <td>₹{order.total?.toLocaleString()}</td>
-                                    <td>
-                                        <div style={{ width: '140px' }}>
-                                            <CustomSelect
-                                                options={statusOptions}
-                                                value={order.status}
-                                                onChange={(value) => handleStatusChange(order.id, value)}
-                                            />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span className={`${styles.badge} ${order.paymentStatus === 'paid' ? styles.paid : styles.pending}`}>
-                                            {order.paymentStatus || 'Pending'}
-                                        </span>
-                                    </td>
-                                    <td>{formatDate(order.createdAt)}</td>
-                                    <td>
-                                        <div className={styles.actions}>
-                                            <button
-                                                onClick={() => openOrderModal(order)}
-                                                className={`${styles.actionBtn} ${styles.view}`}
-                                                title="View Details"
-                                            >
-                                                <FaEye />
-                                            </button>
-                                        </div>
-                                    </td>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Payment</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {orders.map((order) => (
+                                    <tr key={order.id}>
+                                        <td><strong>{order.orderNumber}</strong></td>
+                                        <td>
+                                            {order.customerName}
+                                            <br />
+                                            <small style={{ color: '#666' }}>{order.customerEmail}</small>
+                                        </td>
+                                        <td>{order.items?.length || 0} items</td>
+                                        <td>₹{order.total?.toLocaleString()}</td>
+                                        <td>
+                                            <div style={{ width: '140px' }}>
+                                                <CustomSelect
+                                                    options={statusOptions}
+                                                    value={order.status}
+                                                    onChange={(value) => handleStatusChange(order.id, value)}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span className={`${styles.badge} ${order.paymentStatus === 'paid' ? styles.paid : styles.pending}`}>
+                                                {order.paymentStatus || 'Pending'}
+                                            </span>
+                                        </td>
+                                        <td>{formatDate(order.createdAt)}</td>
+                                        <td>
+                                            <div className={styles.actions}>
+                                                <button
+                                                    onClick={() => openOrderModal(order)}
+                                                    className={`${styles.actionBtn} ${styles.view}`}
+                                                    title="View Details"
+                                                >
+                                                    <FaEye />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <div className={styles.emptyState}>
                         <FaCartShopping />

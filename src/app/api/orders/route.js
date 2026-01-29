@@ -31,6 +31,22 @@ export async function GET(request) {
             query.status = status;
         }
 
+        const startDate = searchParams.get('startDate');
+        const endDate = searchParams.get('endDate');
+
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) {
+                query.createdAt.$gte = new Date(startDate);
+            }
+            if (endDate) {
+                // Set end date to end of day
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 999);
+                query.createdAt.$lte = end;
+            }
+        }
+
         const orders = await find('orders', query);
         // Sort by date, newest first
         orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

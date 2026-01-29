@@ -6,12 +6,10 @@ import { requireAuth } from '@/lib/auth';
 export async function GET() {
     try {
         const products = await getAll('products');
-        // Only return active products for public API
-        const activeProducts = products.filter(p => p.isActive !== false);
 
         return NextResponse.json({
             success: true,
-            data: activeProducts
+            data: products
         });
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -63,7 +61,6 @@ export async function POST(request) {
             category: body.category || 'single',
             scent: body.scent || null,
             stock: body.stock || 0,
-            isActive: body.isActive !== false
         });
 
         return NextResponse.json({

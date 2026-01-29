@@ -89,7 +89,7 @@ export default function AdminDashboard() {
                         <FaIndianRupeeSign />
                     </div>
                     <div className={styles.statInfo}>
-                        <h3>Total Revenue</h3>
+                        <h3>Total Order Price</h3>
                         <p>₹{(stats?.totalRevenue || 0).toLocaleString()}</p>
                     </div>
                 </div>
@@ -102,32 +102,34 @@ export default function AdminDashboard() {
                 </div>
 
                 {stats?.recentOrders && stats.recentOrders.length > 0 ? (
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {stats.recentOrders.map((order) => (
-                                <tr key={order.id}>
-                                    <td>{order.orderNumber}</td>
-                                    <td>{order.customerName}</td>
-                                    <td>₹{order.total?.toLocaleString()}</td>
-                                    <td>
-                                        <span className={`${styles.badge} ${styles[order.status]}`}>
-                                            {order.status}
-                                        </span>
-                                    </td>
-                                    <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <div className={styles.tableWrapper}>
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {stats.recentOrders.map((order) => (
+                                    <tr key={order.id}>
+                                        <td>{order.orderNumber}</td>
+                                        <td>{order.customerName}</td>
+                                        <td>₹{order.total?.toLocaleString()}</td>
+                                        <td>
+                                            <span className={`${styles.badge} ${styles[order.status]}`}>
+                                                {order.status}
+                                            </span>
+                                        </td>
+                                        <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <div className={styles.emptyState}>
                         <FaCartShopping />

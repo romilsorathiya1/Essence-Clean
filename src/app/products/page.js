@@ -1,116 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../../styles/Products.module.css';
 import { FaLeaf, FaRecycle, FaShieldHeart, FaStar, FaCheck, FaTruck, FaArrowRight, FaBuilding, FaPhone, FaEnvelope, FaWhatsapp, FaMagnifyingGlass, FaBox } from 'react-icons/fa6';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 
-const products = [
-    {
-        id: 1,
-        name: 'Complete Full Pack',
-        tagline: 'Best Value Bundle',
-        description: 'The ultimate cleaning bundle for businesses and homes. Perfect for hotels, restaurants, and offices. Includes spray bottles, refill packs, and microfiber cloths.',
-        price: 2499,
-        originalPrice: 3299,
-        discount: '24% OFF',
-        image: '/assets/fullPack.png',
-        features: [
-            '3x 500ml Spray Bottles (All Scents)',
-            '3x 1L Refill Packs (All Scents)',
-            '3x Premium Microfiber Cloths',
-            'Elegant Gift Box Packaging'
-        ],
-        badge: 'Best Seller',
-        rating: 4.9,
-        reviews: 456,
-        category: 'bundle'
-    },
-    {
-        id: 2,
-        name: 'Refill Pack Bundle',
-        tagline: 'All 3 Scents',
-        description: 'Complete refill set with all three refreshing scents. Ideal for commercial spaces and bulk usage.',
-        price: 1199,
-        originalPrice: 1499,
-        discount: '20% OFF',
-        image: '/assets/refillPack.png',
-        features: [
-            '1L Lavender Bliss Refill',
-            '1L Fresh Citrus Refill',
-            '1L Ocean Breeze Refill',
-            'Eco-Friendly Packaging'
-        ],
-        badge: 'Popular',
-        rating: 4.8,
-        reviews: 289,
-        category: 'bundle'
-    },
-    {
-        id: 3,
-        name: 'Lavender Bliss Refill',
-        tagline: 'Calming Scent',
-        description: 'Soothing lavender fragrance for a premium ambiance. Perfect for hotel rooms, spas, and reception areas.',
-        price: 449,
-        originalPrice: 549,
-        discount: '18% OFF',
-        image: '/assets/1refill.png',
-        features: [
-            '1L Concentrated Formula',
-            'Calming Lavender Aroma',
-            '4x Spray Bottle Refills',
-            '100% Natural Ingredients'
-        ],
-        badge: null,
-        rating: 4.7,
-        reviews: 167,
-        category: 'single',
-        scent: 'lavender'
-    },
-    {
-        id: 4,
-        name: 'Fresh Citrus Refill',
-        tagline: 'Energizing Scent',
-        description: 'Zesty citrus blend for an energizing clean. Ideal for restaurant kitchens, cafes, and food service areas.',
-        price: 449,
-        originalPrice: 549,
-        discount: '18% OFF',
-        image: '/assets/2refill.png',
-        features: [
-            '1L Concentrated Formula',
-            'Refreshing Citrus Aroma',
-            '4x Spray Bottle Refills',
-            '100% Natural Ingredients'
-        ],
-        badge: null,
-        rating: 4.8,
-        reviews: 198,
-        category: 'single',
-        scent: 'citrus'
-    },
-    {
-        id: 5,
-        name: 'Ocean Breeze Refill',
-        tagline: 'Fresh Scent',
-        description: 'Crisp ocean-inspired freshness for a clean atmosphere. Great for office restrooms, lobbies, and commercial spaces.',
-        price: 449,
-        originalPrice: 549,
-        discount: '18% OFF',
-        image: '/assets/3refill.png',
-        features: [
-            '1L Concentrated Formula',
-            'Fresh Ocean Aroma',
-            '4x Spray Bottle Refills',
-            '100% Natural Ingredients'
-        ],
-        badge: 'New',
-        rating: 4.6,
-        reviews: 124,
-        category: 'single',
-        scent: 'ocean'
-    }
-];
 
 const benefits = [
     {
@@ -138,6 +33,27 @@ const benefits = [
 export default function Products() {
     const { addToCart, openCart } = useCart();
     const [addedProducts, setAddedProducts] = useState({});
+
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                if (data.success) {
+                    setProducts(data.data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     const bundles = products.filter(p => p.category === 'bundle');
     const singleRefills = products.filter(p => p.category === 'single');
@@ -241,6 +157,8 @@ export default function Products() {
                                         </span>
                                     </div>
 
+
+
                                     <p className={styles.productDescription}>{product.description}</p>
 
                                     <ul className={styles.featuresList}>
@@ -254,7 +172,9 @@ export default function Products() {
 
                                     <div className={styles.priceWrapper}>
                                         <span className={styles.currentPrice}>₹{product.price.toLocaleString()}</span>
-                                        <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
+                                        {product.originalPrice && (
+                                            <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
+                                        )}
                                         <span className={styles.discount}>{product.discount}</span>
                                     </div>
 
@@ -310,15 +230,19 @@ export default function Products() {
                                             ))}
                                         </div>
                                         <span className={styles.ratingText}>
-                                            {product.rating} ({product.reviews})
+                                            {product.rating} ({product.reviews} reviews)
                                         </span>
                                     </div>
+
+
 
                                     <p className={styles.productDescription}>{product.description}</p>
 
                                     <div className={styles.priceWrapper}>
                                         <span className={styles.currentPrice}>₹{product.price.toLocaleString()}</span>
-                                        <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
+                                        {product.originalPrice && (
+                                            <span className={styles.originalPrice}>₹{product.originalPrice.toLocaleString()}</span>
+                                        )}
                                         <span className={styles.discount}>{product.discount}</span>
                                     </div>
 
@@ -423,4 +347,3 @@ export default function Products() {
         </div>
     );
 }
-
