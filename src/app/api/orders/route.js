@@ -31,6 +31,11 @@ export async function GET(request) {
             query.status = status;
         }
 
+        const paymentStatus = searchParams.get('paymentStatus');
+        if (paymentStatus && paymentStatus !== 'all') {
+            query.paymentStatus = paymentStatus;
+        }
+
         const startDate = searchParams.get('startDate');
         const endDate = searchParams.get('endDate');
 

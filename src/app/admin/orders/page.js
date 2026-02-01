@@ -12,6 +12,7 @@ export default function AdminOrders() {
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [paymentFilter, setPaymentFilter] = useState('all');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
@@ -24,9 +25,19 @@ export default function AdminOrders() {
         { value: 'cancelled', label: 'Cancelled' }
     ];
 
+    const paymentOptions = [
+        { value: 'pending', label: 'Pending' },
+        { value: 'paid', label: 'Received' }
+    ];
+
     const filterOptions = [
         { value: 'all', label: 'All Status' },
         ...statusOptions
+    ];
+
+    const paymentFilterOptions = [
+        { value: 'all', label: 'All Payments' },
+        ...paymentOptions
     ];
 
     const fetchOrders = async () => {
@@ -34,6 +45,7 @@ export default function AdminOrders() {
             const queryParams = new URLSearchParams();
             if (searchQuery) queryParams.append('search', searchQuery);
             if (statusFilter !== 'all') queryParams.append('status', statusFilter);
+            if (paymentFilter !== 'all') queryParams.append('paymentStatus', paymentFilter);
             if (startDate) queryParams.append('startDate', startDate);
             if (endDate) queryParams.append('endDate', endDate);
 
@@ -52,7 +64,7 @@ export default function AdminOrders() {
 
     useEffect(() => {
         fetchOrders();
-    }, [searchQuery, statusFilter, startDate, endDate]);
+    }, [searchQuery, statusFilter, paymentFilter, startDate, endDate]);
 
     const openOrderModal = (order) => {
         setSelectedOrder(order);
@@ -80,6 +92,30 @@ export default function AdminOrders() {
         } catch (error) {
             console.error('Error updating order:', error);
             alert('Failed to update order');
+        }
+    };
+
+    const handlePaymentChange = async (orderId, newPaymentStatus) => {
+        try {
+            const response = await fetch(`/api/orders/${orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paymentStatus: newPaymentStatus })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                fetchOrders();
+                if (selectedOrder && selectedOrder.id === orderId) {
+                    setSelectedOrder({ ...selectedOrder, paymentStatus: newPaymentStatus });
+                }
+            } else {
+                alert(data.error || 'Failed to update payment status');
+            }
+        } catch (error) {
+            console.error('Error updating payment status:', error);
+            alert('Failed to update payment status');
         }
     };
 
@@ -144,6 +180,14 @@ export default function AdminOrders() {
                         onChange={(value) => setStatusFilter(value)}
                     />
                 </div>
+
+                <div className={styles.filterSelect}>
+                    <CustomSelect
+                        options={paymentFilterOptions}
+                        value={paymentFilter}
+                        onChange={(value) => setPaymentFilter(value)}
+                    />
+                </div>
             </div>
 
             <div className={styles.tableCard}>
@@ -187,9 +231,13 @@ export default function AdminOrders() {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className={`${styles.badge} ${order.paymentStatus === 'paid' ? styles.paid : styles.pending}`}>
-                                                {order.paymentStatus || 'Pending'}
-                                            </span>
+                                            <div style={{ width: '140px' }}>
+                                                <CustomSelect
+                                                    options={paymentOptions}
+                                                    value={order.paymentStatus || 'pending'}
+                                                    onChange={(value) => handlePaymentChange(order.id, value)}
+                                                />
+                                            </div>
                                         </td>
                                         <td>{formatDate(order.createdAt)}</td>
                                         <td>

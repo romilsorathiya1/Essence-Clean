@@ -78,9 +78,6 @@ export default function AdminLayout({ children }) {
         <div className={styles.adminLayout}>
             {/* Mobile Header - Visible only on mobile */}
             <div className={styles.mobileHeader}>
-                <div className={styles.mobileLogo}>
-                    <h2>Essence Clean</h2>
-                </div>
                 <button
                     className={styles.menuBtn}
                     onClick={() => setIsSidebarOpen(true)}
@@ -88,6 +85,9 @@ export default function AdminLayout({ children }) {
                 >
                     <span className={styles.hamburgerIcon}></span>
                 </button>
+                <div className={styles.mobileLogo}>
+                    <h2>Essence Clean</h2>
+                </div>
             </div>
 
             {/* Overlay */}

@@ -70,6 +70,15 @@ export async function PUT(request, { params }) {
             );
         }
 
+        // Validate payment status if provided
+        const validPaymentStatuses = ['pending', 'paid'];
+        if (body.paymentStatus && !validPaymentStatuses.includes(body.paymentStatus)) {
+            return NextResponse.json(
+                { success: false, error: 'Invalid payment status' },
+                { status: 400 }
+            );
+        }
+
         // Update order
         const updatedOrder = await update('orders', id, {
             status: body.status ?? existing.status,
